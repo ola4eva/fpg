@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Project 2 days deadline -->    
+        <record id="project_two_days_to_deadline" model="mail.template">
+            <field name="name">Project: 2 Days To Deadline</field>
+            <field name="subject">Project Deadline Is In Two Days</field>
+            <field name="email_from">babawaleolalekan@gmail.com</field>
+            <field name="email_to">${object.user_id.partner_id.email_formatted}</field>
+            <field name="auto_delete" eval="False" />
+            <field name="model_id" ref="model_project_project" />
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.user_id.name},</p>
+                <p>Your project ${object.name} has a deadline of two days from now. Please take note.</p>
+                <p>Best Regards,</p>
+                <p>Administrator.</p>
+            ]]>
+            </field>
+        </record>
+
+        <!-- Project 1 day deadline -->    
+        <record id="project_one_day_to_deadline" model="mail.template">
+            <field name="name">Project: 2 Days To Deadline</field>
+            <field name="subject">Project Deadline Is In A Day</field>
+            <field name="email_from">babawaleolalekan@gmail.com</field>
+            <field name="email_to">${object.user_id.partner_id.email_formatted}</field>
+            <field name="auto_delete" eval="False" />
+            <field name="model_id" ref="model_project_project" />
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.user_id.name},</p>
+                <p>Your project ${object.name} has a deadline of a day from now. Please take note.</p>
+                <p>Best Regards,</p>
+                <p>Administrator.</p>
+            ]]>
+            </field>
+        </record>
+
+        <!-- Project 1 day overdue -->    
+        <record id="project_one_day_overdue" model="mail.template">
+            <field name="name">Project: One Day Overdue</field>
+            <field name="subject">Project Is One Day Overdue</field>
+            <field name="email_from">babawaleolalekan@gmail.com</field>
+            <field name="email_to">${object.user_id.partner_id.email_formatted}</field>
+            <field name="auto_delete" eval="False" />
+            <field name="model_id" ref="model_project_project" />
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.user_id.name},</p>
+                <p>Your project ${object.name} is one day overdue. Please take note.</p>
+                <p>Best Regards,</p>
+                <p>Administrator.</p>
+            ]]>
+            </field>
+        </record>
+
+        <!-- Project Closed -->
+        <record id="project_closed" model="mail.template">
+            <field name="name">Project: Closure</field>
+            <field name="subject">Project Has Been Closed</field>
+            <field name="email_from">babawaleolalekan@gmail.com</field>
+            <field name="email_to">${object.user_id.partner_id.email_formatted}</field>
+            <field name="auto_delete" eval="False" />
+            <field name="model_id" ref="model_project_project" />
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.user_id.name},</p>
+                <p>Your project ${object.name} has been closed.</p>
+                <p>Best Regards,</p>
+                <p>Administrator.</p>
+            ]]>
+            </field>
+        </record>
+
+    </data>
+</odoo>
