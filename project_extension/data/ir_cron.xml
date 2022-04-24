@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="ir_cron_notify_of_overdue_project" model="ir.cron">
+            <field name="name">Project: Notify Overdue Project</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(DateTime.now().replace(hour=2, minute=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')" />
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._notify_of_due_project()</field>
+            <field name="state">code</field>
+        </record>
+
+        <record id="ir_cron_notify_project_to_due" model="ir.cron">
+            <field name="name">Project: Notify Project That will be due</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(DateTime.now().replace(hour=2, minute=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')" />
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._notify_to_due_project()</field>
+            <field name="state">code</field>
+        </record>
+    
+    </data>
+</odoo>
