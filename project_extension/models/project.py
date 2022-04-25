@@ -1,49 +1,32 @@
 # -*- coding: utf-8 -*-
 
+import email
 from odoo import models, fields, api
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 
-
-class ProjectProject(models.Model):
-    _inherit = 'project.project'
-    
-    # field_name = fields.Boolean('field_name')
-    
-    def _onchange_stage_id(self):
-        if self.stage_id.is_closed:
-            # send mail to the assignee stating that the project has been closed
-            pass
-        
-    def _notify_to_due_project(self):
-        # send mail notifying of projects that will be due in days
-        pass
-    
-    def _notify_of_due_project(self):
-        # send mail to assignee stating overdue projects
-        domain = [('stage_id.is_closed', '=', False)]
-        pass
-    
 
 class ProjectTask(models.Model):
     _inherit = 'project.task'
-        
+    
+    @api.onchange('stage_id')
     def _onchange_stage_id(self):
+        """Send a mail notification to project stating that task has been completed.
+        """
         if self.stage_id.is_closed:
-            for user in self.user_ids:
-                # send mail to the assignee stating that the project has been closed
-                pass
-            pass
+            email_template = self.env.ref("project_extension.task_completed")
+            project_id = self.project_id
+            manager_id = project_id.user_id
+            email_template.with_context(recipient=manager_id.partner_id).send_mail(self._origin.id, force_send=True)
         
     @api.model
     def _notify_task_overdue(self):
-        # send mail notifying of projects that will be due in days
+        """Send mail notifying of projects that will be due in days
+        """
         today = fields.Date.today()
         today_to_string = fields.Date.to_string(today)
         domain_overdue = [('date_deadline', '<', today_to_string), ('stage_id.is_closed', '=', False)]
         overdue_tasks = self.search(domain_overdue)
         for task in overdue_tasks:
-            print ("**************************************")
-            print ("** Task: ** ", task.name, "; ** Due Date: **", task.date_deadline)
             assignees = task.user_ids
             mail_template = self.env.ref("project_extension.task_one_day_overdue")
             for assignee in assignees:
@@ -51,8 +34,18 @@ class ProjectTask(models.Model):
                 mail_template.with_context(recipient=partner_id).send_mail(task.id, force_send=True)
         return True
     
-    def _notify_of_due_project(self):
-        # send mail to assignee stating overdue projects
-        domain = [('stage_id.is_closed', '=', False)]
-        pass
+    @api.model
+    def _notify_task_will_due(self):
+        """Send notification to assignee for tasks that are due in two days.
+        """
+        today = fields.Date.today()
+        next_tomorrow = today + relativedelta(days=2)
+        next_tomorrow_to_string = fields.Date.to_string(next_tomorrow)
+        domain = [('stage_id.is_closed', '=', False), ('date_deadline', '=', next_tomorrow_to_string)]
+        tasks_due_in_two_days = self.search(domain)
+        mail_template = self.env.ref("project_extension.task_due_in_two_days")
+        for task in tasks_due_in_two_days:
+            for assignee in task.user_ids:
+                mail_template.with_context(recipient=assignee.partner_id).send_mail(task.id, force_send=True)            
+        return True
     
