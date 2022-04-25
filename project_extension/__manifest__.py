@@ -18,9 +18,7 @@
     'depends': ['base', 'project'],
 
     'data': [
-        # 'security/ir.model.access.csv',
         'data/email_data.xml',
         'data/ir_cron.xml',
-        # 'views/project_views.xml',
     ],
 }
