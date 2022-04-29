@@ -21,4 +21,5 @@
         'data/email_data.xml',
         'data/ir_cron.xml',
     ],
+    'license': 'LGPL-3',
 }
