@@ -7,17 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 class ProjectTask(models.Model):
     _inherit = 'project.task'
-    
-    @api.onchange('stage_id')
-    def _onchange_stage_id(self):
-        """Send a mail notification to project stating that task has been completed.
-        """
-        if self.stage_id.is_closed:
-            email_template = self.env.ref("project_extension.task_completed")
-            project_id = self.project_id
-            manager_id = project_id.user_id
-            email_template.with_context(recipient=manager_id.partner_id).send_mail(self._origin.id, force_send=True)
-        
+                
     @api.model
     def _notify_task_overdue(self):
         """Send mail notifying of projects that will be due in days
