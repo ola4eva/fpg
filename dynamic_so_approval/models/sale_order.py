@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-# Copyright 2019 EquickERP
-#
-##############################################################################
+
 
 from odoo import models, fields, api, _
 from datetime import datetime
-from odoo.exceptions import Warning, UserError
+from odoo.exceptions import UserError
 
 
-class purchase_order(models.Model):
-    _inherit = 'purchase.order'
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
 
     next_approved_by_user = fields.Many2many('res.users',string="Current Approval Users",copy=False)
     next_approved_by_group = fields.Many2one('res.groups',string="Current Approval Groups",copy=False)
     next_approval_line_id = fields.Many2one('config.po.approval.line',string="Next Approval Line",copy=False)
     can_user_approve_order = fields.Boolean(string="Can User Approve Order?", compute='check_user_approve_order')
-
+    state = fields.Selection(selection_add=[
+        ('to approve', 'To Approve'),
+        ('sale',),
+    ], string='state')
+    
     def button_cancel(self):
         for order in self:
             order.write({'next_approved_by_user':False,'next_approved_by_group':False,'next_approval_line_id':False})
-        return super(purchase_order,self).button_cancel()
+        return super(SaleOrder,self).button_cancel()
 
     def check_user_approve_order(self):
         for order in self:
@@ -39,22 +39,22 @@ class purchase_order(models.Model):
                     user_approve_order = True
             order.can_user_approve_order = user_approve_order
 
-    def do_purchase_approve(self):
+    def do_sale_approve(self):
         for order in self:
             if order.state == 'to approve':
                 if order.next_approved_by_user:
                     if not self.env.user._is_admin() and self.env.user not in order.next_approved_by_user:
-                        raise Warning(_("You don't have rights to approved order."))
+                        raise UserError(_("You don't have rights to approved order."))
                 if order.next_approved_by_group:
                     if not self.env.user._is_admin() and order.next_approved_by_group not in self.env.user.groups_id:
-                        raise Warning(_("You don't have rights to approved order."))
+                        raise UserError(_("You don't have rights to approved order."))
 
                 next_approval_line_id = order.find_order_approval(order.next_approval_line_id)
                 if next_approval_line_id:
                     order.update_next_approval(next_approval_line_id)
                 else:
                     order.write({'next_approved_by_user':False,'next_approved_by_group':False,'next_approval_line_id':False})
-                    order.button_approve()
+                    order.action_confirm()
 
     def update_next_approval(self,next_approval_line_id):
         approve_by = next_approval_line_id.config_approval_id.approve_by

@@ -5,25 +5,24 @@
 #
 ##############################################################################
 {
-    'name': "Dynamic Purchase Approval",
-    'category': 'Purchase',
-    'version': '12.0.1.0',
-    'author': 'Equick ERP',
+    'name': "Dynamic Sale Approval",
+    'category': 'Sale',
+    'version': '15.1.0',
+    'author': 'Olalekan Babawale',
     'description': """
-        This module allows you to approve purchase order users or group wise.
+        This module allows you to approve sale order users or group wise.
     """,
-    'summary': """Purchase Approval | Dynamic Purchase Approval | User wise purchase approval | multi user approval | multi user purchase approval | multi level approval | purchase multi level approval | dynamic approval|po approval | access rights wise po approval.""",
-    'depends': ['base', 'purchase'],
-    'price': 25,
-    'currency': 'EUR',
-    'license': 'OPL-1',
-    'website': "",
+    'summary': """Sale Approval""",
+    'depends': [
+        'base',
+        'sale_management',
+        'sale'
+    ],
     'data': [
         'security/ir.model.access.csv',
-        'views/config_po_approval.xml',
-        'views/purchase_order_view.xml'
+        'views/config_so_approval.xml',
+        'views/sale_order_view.xml'
     ],
-    'images': ['static/description/main_screenshot.png'],
     'installable': True,
     'auto_install': False,
     'application': False,

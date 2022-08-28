@@ -5,7 +5,7 @@
 #
 ##############################################################################
 
-from . import config_po_approval
-from . import purchase_order
+from . import config_so_approval
+from . import sale_order
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

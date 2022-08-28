@@ -44,10 +44,10 @@ class purchase_order(models.Model):
             if order.state == 'to approve':
                 if order.next_approved_by_user:
                     if not self.env.user._is_admin() and self.env.user not in order.next_approved_by_user:
-                        raise Warning(_("You don't have rights to approved order."))
+                        raise UserError(_("You don't have rights to approved order."))
                 if order.next_approved_by_group:
                     if not self.env.user._is_admin() and order.next_approved_by_group not in self.env.user.groups_id:
-                        raise Warning(_("You don't have rights to approved order."))
+                        raise UserError(_("You don't have rights to approved order."))
 
                 next_approval_line_id = order.find_order_approval(order.next_approval_line_id)
                 if next_approval_line_id:

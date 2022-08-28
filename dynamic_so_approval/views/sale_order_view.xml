@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="inherit_sale_order_form_view" model="ir.ui.view">
+		<field name="name">sale.order.form</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form" />
+		<field name="arch" type="xml">
+			<button name="action_cancel" position="attributes">
+				<attribute name="states">draft,sent,sale</attribute>
+			</button>
+			<button name="action_confirm" position="replace">
+				<button name="do_sale_approve" type="object" attrs="{'invisible':[('can_user_approve_order','=',False)]}"
+					string="Approve Order" class="oe_highlight"/>
+			</button>
+			<button name="do_sale_approve" position="after">
+				<button name="action_quotation_send" attrs="{'invisible':[('can_user_approve_order','=',False)]}" 
+					string="Send by Email" type="object" context="{'send_quotation':True}"/>
+				<button name="action_cancel" string="Cancel" type="object"
+					attrs="{'invisible':[('can_user_approve_order','=',False)]}"/>
+			</button>
+			<field name="payment_term_id" position="after">
+				<field name="next_approved_by_user" widget="many2many_tags" invisible="1"/>
+				<field name="next_approved_by_group" invisible="1"/>
+				<field name="next_approval_line_id" invisible="1"/>
+				<field name="can_user_approve_order" invisible="1"/>
+			</field>
+		</field>
+	</record>
+
+</odoo>

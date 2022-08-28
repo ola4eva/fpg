@@ -12,11 +12,11 @@ from odoo.exceptions import Warning
 class res_company(models.Model):
     _inherit = 'res.company'
 
-    config_po_approval_ids = fields.One2many(comodel_name='config.po.approval', inverse_name='company_id', string="Approval Configuration")
+    config_so_approval_ids = fields.One2many(comodel_name='config.so.approval', inverse_name='company_id', string="Approval Configuration")
 
     @api.constrains('config_po_approval_ids')
     def check_company_min_max_amount_overlap(self):
-        config_obj = self.env['config.po.approval']
+        config_obj = self.env['config.so.approval']
         for company in self:
             for config in company.config_po_approval_ids:
                 if not config.max_amount:
@@ -34,7 +34,7 @@ class res_company(models.Model):
 
 
 class config_po_approval(models.Model):
-    _name = 'config.po.approval'
+    _name = 'config.so.approval'
     _description = 'Purchase order Approval Configuration'
     _order = 'min_amount, max_amount'
 
@@ -44,7 +44,7 @@ class config_po_approval(models.Model):
     max_amount = fields.Monetary(string="To Amount", currency_field='currency_id', required=1)
     approve_by = fields.Selection(selection=[('user', 'User'),
                                              ('group', 'Group')], string="Approve Process By", required=1)
-    approval_line_ids = fields.One2many(comodel_name='config.po.approval.line', inverse_name='config_approval_id', string="Approve Line ref")
+    approval_line_ids = fields.One2many(comodel_name='config.so.approval.line', inverse_name='config_approval_id', string="Approve Line ref")
 
     @api.onchange('approve_by')
     def onchange_approve_by_option(self):
@@ -52,14 +52,14 @@ class config_po_approval(models.Model):
 
 
 class config_po_approval_line(models.Model):
-    _name = 'config.po.approval.line'
+    _name = 'config.so.approval.line'
     _description = 'Purchase order Approval Configuration Line'
     _order = 'sequence, id'
 
     sequence = fields.Integer(string="Level")
     res_group_id = fields.Many2one(comodel_name='res.groups', string="Group")
     res_user_ids = fields.Many2many(comodel_name='res.users', string="User(s)")
-    config_approval_id = fields.Many2one(comodel_name='config.po.approval', string="Config Ref",ondelete='cascade')
+    config_approval_id = fields.Many2one(comodel_name='config.so.approval', string="Config Ref",ondelete='cascade')
 
     @api.constrains('res_user_ids','res_group_id','sequence')
     def check_unique_sequence(self):
