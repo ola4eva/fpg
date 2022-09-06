@@ -7,18 +7,28 @@
 		<field name="inherit_id" ref="sale.view_order_form" />
 		<field name="arch" type="xml">
 			<button name="action_cancel" position="attributes">
-				<attribute name="states">draft,sent,sale</attribute>
+				<attribute name="states">draft, sent, sale</attribute>
 			</button>
-			<button name="action_confirm" position="replace">
-				<button name="do_sale_approve" type="object" attrs="{'invisible':[('can_user_approve_order','=',False)]}"
-					string="Approve Order" class="oe_highlight"/>
-			</button>
-			<button name="do_sale_approve" position="after">
+			<!-- <button name="do_sale_approve" position="after">
 				<button name="action_quotation_send" attrs="{'invisible':[('can_user_approve_order','=',False)]}" 
 					string="Send by Email" type="object" context="{'send_quotation':True}"/>
 				<button name="action_cancel" string="Cancel" type="object"
 					attrs="{'invisible':[('can_user_approve_order','=',False)]}"/>
-			</button>
+			</button> -->
+			<xpath expr="//header/button[@id='action_confirm']" position="attributes">
+				<attribute name="invisible">1</attribute>
+				<!-- <button name="do_sale_approve" type="object" attrs="{'invisible':[('can_user_approve_order','=',False)]}"
+					string="Approve Order" class="oe_highlight"/> -->
+			</xpath>
+			<xpath expr="(//header/button[@name='action_confirm'])[2]" position="replace">
+				<button name="do_sale_approve" type="object" attrs="{'invisible':[('can_user_approve_order','=',False)]}"
+					string="Approve Order" class="oe_highlight"/>
+			</xpath>
+			<xpath expr="//header" position="inside">
+				<button name="action_validate" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+				<button name="do_sale_approve" id="do_sale_approve_sent" type="object" attrs="{'invisible':['|', ('state', '!=', 'sent'), ('can_user_approve_order','=', False)]}"
+					string="Approve Order" class="oe_highlight"/>
+			</xpath>
 			<field name="payment_term_id" position="after">
 				<field name="next_approved_by_user" widget="many2many_tags" invisible="1"/>
 				<field name="next_approved_by_group" invisible="1"/>
