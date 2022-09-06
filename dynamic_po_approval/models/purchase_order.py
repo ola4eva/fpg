@@ -26,6 +26,33 @@ class PurchaseOrder(models.Model):
         string="Can User Approve Order?", compute="check_user_approve_order"
     )
 
+    partner_id = fields.Many2one(
+        "res.partner", readonly=True, states={"draft": [("readonly", False)]}
+    )
+    date_order = fields.Datetime(readonly=True, states={"draft": [("readonly", False)]})
+    date_planned = fields.Datetime(
+        readonly=True, states={"draft": [("readonly", False)]}
+    )
+    partner_ref = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
+    order_line = fields.One2many(
+        "purchase.order.line",
+        "order_id",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    user_id = fields.Many2one(
+        "res.users", readonly=True, states={"draft": [("readonly", False)]}
+    )
+    origin = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
+    payment_term_id = fields.Many2one(
+        "account.payment.term", readonly=True, states={"draft": [("readonly", False)]}
+    )
+    fiscal_position_id = fields.Many2one(
+        "account.fiscal.position",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+
     def button_cancel(self):
         for order in self:
             order.write(
@@ -178,5 +205,13 @@ class PurchaseOrder(models.Model):
             if self.date_order > datetime.now():
                 raise UserError(_("You are not allowed to post into a future date"))
 
+
+class PurchaseOrderLine(models.Model):
+    _inherit = "purchase.order.line"
+    
+    name = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
+    price_unit = fields.Float(readonly=True, states={"draft": [("readonly", False)]})
+    product_qty = fields.Float(readonly=True, states={"draft": [("readonly", False)]})
+    taxes_id = fields.Many2many('account.tax', readonly=True, states={"draft": [("readonly", False)]})
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
