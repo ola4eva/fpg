@@ -47,17 +47,57 @@ class ProjectTask(models.Model):
     def _notify_task_will_due(self):
         """Send notification to assignee for tasks that are due in two days."""
         today = fields.Date.today()
-        next_tomorrow = today + relativedelta(days=2)
-        next_tomorrow_to_string = fields.Date.to_string(next_tomorrow)
-        domain = [
+        one_day = today + relativedelta(days=1)
+        two_days = today + relativedelta(days=2)
+        three_days = today + relativedelta(days=3)
+        five_days = today + relativedelta(days=5)
+        
+        # Get the domains for one day, two days, three days and five days        
+        domain_one_day = [
             ("stage_id.is_closed", "=", False),
-            ("date_deadline", "=", next_tomorrow_to_string),
+            ("date_deadline", "=", one_day),
         ]
-        tasks_due_in_two_days = self.search(domain)
-        mail_template = self.env.ref("project_extension.task_due_in_two_days")
+        domain_two_days = [
+            ("stage_id.is_closed", "=", False),
+            ("date_deadline", "=", two_days),
+        ]
+        domain_three_days = domain_two_days = [
+            ("stage_id.is_closed", "=", False),
+            ("date_deadline", "=", three_days),
+        ]
+        domain_five_days = domain_two_days = [
+            ("stage_id.is_closed", "=", False),
+            ("date_deadline", "=", five_days),
+        ]
+        tasks_due_in_one_day = self.search(domain_one_day)
+        tasks_due_in_two_days = self.search(domain_two_days)
+        tasks_due_in_three_days = self.search(domain_three_days)
+        tasks_due_in_five_days = self.search(domain_five_days)
+        mail_template_one_day = self.env.ref("project_extension.task_due_in_one_day")
+        mail_template_two_days = self.env.ref("project_extension.task_due_in_two_days")
+        mail_template_three_days = self.env.ref("project_extension.task_due_in_three_days")
+        mail_template_five_days = self.env.ref("project_extension.task_due_in_five_days")
+        
+        # send the emails depending on when the tasks are expected to be due
+        # TODO: enhance the implementation later as this approach is not DRY and efficient
+        for task in tasks_due_in_one_day:
+            for assignee in task.user_ids:
+                mail_template_one_day.with_context(recipient=assignee.partner_id).send_mail(
+                    task.id, force_send=True
+                )
         for task in tasks_due_in_two_days:
             for assignee in task.user_ids:
-                mail_template.with_context(recipient=assignee.partner_id).send_mail(
+                mail_template_two_days.with_context(recipient=assignee.partner_id).send_mail(
+                    task.id, force_send=True
+                )
+        for task in tasks_due_in_three_days:
+            for assignee in task.user_ids:
+                mail_template_three_days.with_context(recipient=assignee.partner_id).send_mail(
+                    task.id, force_send=True
+                )
+        for task in tasks_due_in_five_days:
+            for assignee in task.user_ids:
+                mail_template_five_days.with_context(recipient=assignee.partner_id).send_mail(
                     task.id, force_send=True
                 )
         return True
