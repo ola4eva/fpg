@@ -20,6 +20,7 @@
     'data': [
         'data/email_data.xml',
         'data/ir_cron.xml',
+        'views/project_views.xml',
     ],
     'license': 'LGPL-3',
 }

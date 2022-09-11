@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="project_project_view_tree_inherit" model="ir.ui.view">
+            <field name="name">project.project.view.tree.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="percent_progress" widget="progressbar" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="project_project_view_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.view.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="percent_progress" widget="progressbar" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
