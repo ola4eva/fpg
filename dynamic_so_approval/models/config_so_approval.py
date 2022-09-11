@@ -35,7 +35,7 @@ class res_company(models.Model):
 
 class config_po_approval(models.Model):
     _name = 'config.so.approval'
-    _description = 'Purchase order Approval Configuration'
+    _description = 'Sale order Approval Configuration'
     _order = 'min_amount, max_amount'
 
     company_id = fields.Many2one(comodel_name='res.company', string="Company Ref")
@@ -53,7 +53,7 @@ class config_po_approval(models.Model):
 
 class config_po_approval_line(models.Model):
     _name = 'config.so.approval.line'
-    _description = 'Purchase order Approval Configuration Line'
+    _description = 'Sale order Approval Configuration Line'
     _order = 'sequence, id'
 
     sequence = fields.Integer(string="Level")

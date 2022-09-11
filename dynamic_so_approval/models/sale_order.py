@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
         "res.groups", string="Current Approval Groups", copy=False
     )
     next_approval_line_id = fields.Many2one(
-        "config.po.approval.line", string="Next Approval Line", copy=False
+        "config.so.approval.line", string="Next Approval Line", copy=False
     )
     can_user_approve_order = fields.Boolean(
         string="Can User Approve Order?", compute="check_user_approve_order"
@@ -25,8 +25,13 @@ class SaleOrder(models.Model):
         selection_add=[
             ("to approve", "To Approve"),
             ("sale",),
+            ("reject", "Rejected"),
+            ("cancel",),
         ],
         string="state",
+    )
+    reject_user_id = fields.Many2one(
+        comodel_name="res.users", string="Rejected by", readonly=True
     )
 
     order_line = fields.One2many(
@@ -68,8 +73,35 @@ class SaleOrder(models.Model):
             )
         return super(SaleOrder, self).button_cancel()
 
+    def action_reject(self):
+        for order in self:
+            order.write(
+                {
+                    "state": "reject",
+                    "reject_user_id": self.env.uid,
+                }
+            )
+
     def action_validate(self):
-        self.write({"state": "to approve"})
+        """This is the action that is called when a user creates a sales order and confirms it.
+
+        The system checks for the dynamic configuration under company settings and finds the next approver either based on
+        group or based on user. Once it finds the next approver, it sends an email to users in the group or the next user
+        and sets the next approver.
+        """
+        for order in self:
+            next_approval_line_id = order.find_order_approval()
+            if next_approval_line_id:
+                order.update_next_approval(next_approval_line_id)
+            else:
+                order.write(
+                    {
+                        "next_approved_by_user": False,
+                        "next_approved_by_group": False,
+                        "next_approval_line_id": False,
+                    }
+                )
+            order.write({"state": "to approve"})
 
     def check_user_approve_order(self):
         for order in self:
@@ -83,7 +115,7 @@ class SaleOrder(models.Model):
                 if order.next_approved_by_group:
                     if order.next_approved_by_group in self.env.user.groups_id:
                         user_approve_order = True
-                if order.user_has_groups("purchase.group_purchase_manager"):
+                if order.user_has_groups("sales_team.group_sale_manager"):
                     user_approve_order = True
             order.can_user_approve_order = user_approve_order
 
@@ -143,7 +175,7 @@ class SaleOrder(models.Model):
                 partner_ids.append(user.partner_id.id)
             self.message_subscribe(partner_ids=partner_ids)
 
-            msg = _("Dear %s, <br/> Please approve purchase order %s.") % (
+            msg = _("Dear %s, <br/> Please approve sales order %s.") % (
                 ", ".join([str(user.name) for user in user_ids]),
                 self.name,
             )
@@ -169,8 +201,8 @@ class SaleOrder(models.Model):
     def find_order_approval(self, approval_line_id=None):
         next_approval_line_id = False
         company_id = self.company_id.sudo()
-        po_approval_ids = company_id.config_po_approval_ids
-        if not po_approval_ids:
+        so_approval_ids = company_id.config_so_approval_ids
+        if not so_approval_ids:
             return next_approval_line_id
 
         main_curreny_total = self.amount_total
@@ -182,7 +214,7 @@ class SaleOrder(models.Model):
                 self.date_order or fields.Date.today(),
             )
 
-        find_approval_id = po_approval_ids.filtered(
+        find_approval_id = so_approval_ids.filtered(
             lambda l: main_curreny_total >= l.min_amount
             and main_curreny_total <= l.max_amount
         )
@@ -215,10 +247,15 @@ class SaleOrder(models.Model):
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
-    
+
     name = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
     price_unit = fields.Float(readonly=True, states={"draft": [("readonly", False)]})
-    product_uom_qty = fields.Float(readonly=True, states={"draft": [("readonly", False)]})
-    tax_id = fields.Many2many('account.tax', readonly=True, states={"draft": [("readonly", False)]})
+    product_uom_qty = fields.Float(
+        readonly=True, states={"draft": [("readonly", False)]}
+    )
+    tax_id = fields.Many2many(
+        "account.tax", readonly=True, states={"draft": [("readonly", False)]}
+    )
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -47,11 +47,30 @@ class PurchaseOrder(models.Model):
     payment_term_id = fields.Many2one(
         "account.payment.term", readonly=True, states={"draft": [("readonly", False)]}
     )
+    reject_user_id = fields.Many2one(
+        comodel_name="res.users", string="Rejected by", readonly=True
+    )
     fiscal_position_id = fields.Many2one(
         "account.fiscal.position",
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    
+    state = fields.Selection(
+        selection_add=[
+            ("reject", "Rejected"),
+            ("cancel",),
+        ],
+    )
+    
+    def action_reject(self):
+        for order in self:
+            order.write(
+                {
+                    "state": "reject",
+                    "reject_user_id": self.env.uid,
+                }
+            )
 
     def button_cancel(self):
         for order in self:
