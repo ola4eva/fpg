@@ -19,5 +19,5 @@ CRM_MONTHS = [
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
-    crm_year_last_month = fields.Selection(selection=CRM_MONTHS, string="Last Month", default='12')
-    crm_year_last_day = fields.Char(string="Last Day", default=31)
+    crm_year_last_month = fields.Selection(selection=CRM_MONTHS, string="Last Month", default='12', config_parameter="crm_fiscal_period.crm_year_last_month")
+    crm_year_last_day = fields.Char(string="Last Day", default=31, config_parameter="crm_fiscal_period.crm_year_last_day")
