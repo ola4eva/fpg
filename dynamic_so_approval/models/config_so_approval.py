@@ -14,11 +14,11 @@ class res_company(models.Model):
 
     config_so_approval_ids = fields.One2many(comodel_name='config.so.approval', inverse_name='company_id', string="Approval Configuration")
 
-    @api.constrains('config_po_approval_ids')
+    @api.constrains('config_so_approval_ids')
     def check_company_min_max_amount_overlap(self):
         config_obj = self.env['config.so.approval']
         for company in self:
-            for config in company.config_po_approval_ids:
+            for config in company.config_so_approval_ids:
                 if not config.max_amount:
                     raise Warning(_("Please enter to amount."))
                 if config.min_amount > config.max_amount:
