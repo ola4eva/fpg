@@ -1,11 +1,15 @@
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
-from odoo import models, api, fields
+from odoo import models, api, fields, Command, _
 from odoo.exceptions import UserError
 
 
 class CrmLead(models.Model):
     _inherit = "crm.lead"
+
+    notification_user_ids = fields.Many2many(
+        comodel_name="res.users", string="Notified Users"
+    )
 
     @api.model
     def cron_close_leads(self):
@@ -103,15 +107,22 @@ class CrmLead(models.Model):
             lead.write({"stage_id": close_stage.id, "active": False})
         return True
 
+    # ---------------------------------------------------
+    # Mail gateway
+    # ---------------------------------------------------
 
-class CrmStage(models.Model):
-    _inherit = "crm.stage"
-
-    @api.constrains("is_close", "is_won")
-    def _check_seats_limit(self):
-        if self.is_close and self.is_won:
-            raise UserError("The same stage cannot be close and won!")
-        if len(self.search([("is_close", "=", True)])) > 1:
-            raise UserError("You can't have multiple close stages!")
-
-    is_close = fields.Boolean("Is close stage?")
+    def _track_template(self, changes):
+        res = super(CrmLead, self)._track_template(changes)
+        crm_lead = self[0]
+        if "stage_id" in changes and crm_lead.stage_id.mail_template_id:
+            res["stage_id"] = (
+                crm_lead.stage_id.mail_template_id,
+                {
+                    "auto_delete_message": True,
+                    "subtype_id": self.env["ir.model.data"]._xmlid_to_res_id(
+                        "mail.mt_note"
+                    ),
+                    "email_layout_xmlid": "mail.mail_notification_light",
+                },
+            )
+        return res

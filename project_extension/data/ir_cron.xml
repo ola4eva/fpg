@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <data noupdate="1">
 
         <!-- Notify of tasks that will be due in one day -->
         <record id="ir_cron_notify_project_task_that_will_be_due" model="ir.cron">
