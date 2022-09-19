@@ -6,6 +6,7 @@ from odoo import models, fields, api
 class HrDutyAssumption(models.Model):
     _name = "hr_duty_assumption.hr_duty_assumption"
     _description = "HR Assumption of Duty"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Name")
     employee_id = fields.Many2one(comodel_name="hr.employee", string="Employee")
@@ -21,13 +22,13 @@ class HrDutyAssumption(models.Model):
     place = fields.Char(string="Place of Assumption")
     supervisor_id = fields.Many2one(comodel_name="hr.employee", string="Supervisor")
     # pfa_name= fields.Char(string="", )
-    
+
     # TODO
     # 1. Add chatter to the form view
     # 2. Add menu for pfa's
     # 3. Add fuctionality to object methods
     # 4. Clean up the form view
-    
+
     state = fields.Selection(
         [
             ("draft", "New"),
@@ -40,6 +41,7 @@ class HrDutyAssumption(models.Model):
         string="State",
         readonly=True,
         default="draft",
+        tracking=True,
     )
 
     def action_submit(self):

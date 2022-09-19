@@ -43,17 +43,21 @@
                 <field name="employee_number" />
                 <field name="position" />
                 <field name="department_id" />
+              </group>
+              <group>
                 <field name="unit" />
                 <field name="job_id" />
                 <field name="salary_offered" />
                 <field name="date_assumption" />
                 <field name="place" />
                 <field name="supervisor_id" />
-
               </group>
-              <group></group>
             </group>
           </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids"/>
+            <field name="message_ids"/>
+          </div>
         </form>
       </field>
     </record>

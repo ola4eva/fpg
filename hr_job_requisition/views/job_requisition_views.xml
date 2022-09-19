@@ -1,0 +1,81 @@
+<odoo>
+  <data>
+
+    <record id="hr_job_requisition.job_requisition_view_tree" model="ir.ui.view">
+      <field name="name">hr_job_requisition.job_requisition.view.tree</field>
+      <field name="model">hr_job_requisition.job_requisition</field>
+      <field name="arch" type="xml">
+        <tree string="Job Requisition">
+          <field name="name" />
+          <field name="date_hire" />
+          <field name="type" />
+          <field name="department_id" />
+          <field name="state" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="hr_job_requisition.job_requisition_view_form" model="ir.ui.view">
+      <field name="name">hr_job_requisition.job_requisition.view.form</field>
+      <field name="model">hr_job_requisition.job_requisition</field>
+      <field name="arch" type="xml">
+        <form string="Job Requisition">
+          <header>
+            <button name="action_submit" string="Submit" type="object" states="draft" />
+            <button name="action_approve" string="Approve" type="object" class="oe_highlight" states="open" />
+            <button name="action_reject" string="Reject" type="object" class="btn btn-danger" states="open" />
+            <button name="action_cancel" string="Cancel" type="object" class="btn btn-primary" states="draft" />
+            <field name="state" widget="statusbar" />
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="name" />
+                <field name="date_hire" />
+                <field name="department_id" />
+              </group>
+              <group>
+                <field name="type" />
+                <field name="management_level" />
+                <field name="number_vacancy" />
+              </group>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids"/>
+            <field name="message_ids"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="hr_job_requisition.job_requisition_view_search" model="ir.ui.view">
+      <field name="name">hr_job_requisition.job_requisition.view.search</field>
+      <field name="model">hr_job_requisition.job_requisition</field>
+      <field name="arch" type="xml">
+        <search string="Job Requisition">
+          <field name="name" />
+          <field name="date_hire" />
+          <field name="state" />
+          <field name="department_id" />
+        </search>
+      </field>
+    </record>
+
+    <record id="job_requisition_action" model="ir.actions.act_window">
+      <field name="name">Job Requisition</field>
+      <field name="res_model">hr_job_requisition.job_requisition</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[]</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p class="oe_no_content_create">Click to create a new job Requisition</p>
+      </field>
+    </record>
+
+    <menuitem id="hr_job_requisition_menu" name="Job Requisition" sequence="10"/>
+
+    <menuitem id="hr_job_requisition_menu_action" name="Job Requisition" action="job_requisition_action" parent="hr_job_requisition_menu" sequence="1"/>
+
+  </data>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="category_job_requisition_root" model="ir.module.category">
+            <field name="name">Job Requisition</field>
+            <field name="description">Job Requisition</field>
+        </record>
+
+        <record id="category_job_requisition" model="ir.module.category">
+            <field name="name">Job Requisition</field>
+            <field name="parent_id" eval="category_job_requisition_root" />
+        </record>
+
+        <record id="group_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="category_job_requisition" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        </record>
+
+        <record id="group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="category_job_requisition" />
+            <field name="implied_ids" eval="[(4, ref('hr_job_requisition.group_user'))]" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        </record>
+
+    </data>
+
+</odoo>

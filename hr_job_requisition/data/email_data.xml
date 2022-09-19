@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="0">
+    
+        <record id="submit" model="mail.template">
+            <field name="name">Job Requisition Submission</field>
+            <field name="subject">{{ object.name }} Was Created</field>
+            <field name="email_from">{{ user.company_id.email }}</field>
+            <field name="email_to">babawaleolalekan@gmail.com</field>
+            <field name="model_id" ref="model_hr_job_requisition_job_requisition" />
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear</p>
+                    <p>Job Requisition was submitted for your review and / or approval/rejection</p>
+                    <p>Best Regards,</p>
+                    <p>Administrator.</p>
+                </div>
+            </field>
+        </record>
+
+        <record id="approve" model="mail.template">
+            <field name="name">Job Requisition Submission</field>
+            <field name="subject">{{ object.name }} Was Created</field>
+            <field name="email_from">{{ user.company_id.email }}</field>
+            <field name="email_to">babawaleolalekan@gmail.com</field>
+            <field name="model_id" ref="model_hr_job_requisition_job_requisition" />
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear</p>
+                    <p>I hereby approve that the new job requisitions can be carried out.</p>
+                    <p>Best Regards,</p>
+                    <p>Administrator.</p>
+                </div>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>
