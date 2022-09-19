@@ -1,0 +1,97 @@
+<odoo>
+  <data>
+
+    <record id="model_name_view_tree" model="ir.ui.view">
+      <field name="name">model_name.view.tree</field>
+      <field name="model">hr_duty_assumption.hr_duty_assumption</field>
+      <field name="arch" type="xml">
+        <tree string="Assumption of Duty">
+          <field name="name" />
+          <field name="employee_id" />
+          <field name="employee_number" />
+          <field name="position" />
+          <field name="department_id" />
+          <field name="unit" />
+          <field name="job_id" />
+          <field name="salary_offered" />
+          <field name="date_assumption" />
+          <field name="place" />
+          <field name="supervisor_id" />
+          <field name="state" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="model_name_view_form" model="ir.ui.view">
+      <field name="name">hr_duty_assumption.view.form</field>
+      <field name="model">hr_duty_assumption.hr_duty_assumption</field>
+      <field name="arch" type="xml">
+        <form string="Assumption of Duty">
+          <header>
+            <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft" />
+            <button name="action_validate" string="Submit" type="object" class="oe_highlight" states="submit" />
+            <button name="action_approve" string="Submit" type="object" class="oe_highlight" states="validate" />
+            <button name="action_cancel" string="Submit" type="object" class="oe_highlight" states="draft" />
+            <button name="action_reject" string="Submit" type="object" class="oe_highlight" states="submit" />
+            <field name="state" widget="statusbar" statusbar_visible="draft,submit,validate,approve" />
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="employee_number" />
+                <field name="position" />
+                <field name="department_id" />
+                <field name="unit" />
+                <field name="job_id" />
+                <field name="salary_offered" />
+                <field name="date_assumption" />
+                <field name="place" />
+                <field name="supervisor_id" />
+
+              </group>
+              <group></group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="model_name_view_search" model="ir.ui.view">
+      <field name="name">model_name.view.search</field>
+      <field name="model">hr_duty_assumption.hr_duty_assumption</field>
+      <field name="arch" type="xml">
+        <search string="Assumption of Duty">
+          <field name="name" />
+          <field name="employee_id" />
+          <field name="employee_number" />
+          <field name="position" />
+          <field name="department_id" />
+          <field name="unit" />
+          <field name="job_id" />
+          <field name="salary_offered" />
+          <field name="date_assumption" />
+          <field name="place" />
+          <field name="supervisor_id" />
+        </search>
+      </field>
+    </record>
+
+    <record id="hr_assumption_of_duty_action" model="ir.actions.act_window">
+      <field name="name">Assumption of Duty</field>
+      <field name="res_model">hr_duty_assumption.hr_duty_assumption</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[]</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p class="oe_no_content_create"></p>
+      </field>
+    </record>
+
+    <menuitem id="assumption_of_duty_menu" name="Assumption of Duty" sequence="10"/>
+
+    <menuitem id="assumption_of_duty_action_menu" name="Assumption of Duty" action="hr_assumption_of_duty_action" parent="assumption_of_duty_menu" />
+
+  </data>
+</odoo>
