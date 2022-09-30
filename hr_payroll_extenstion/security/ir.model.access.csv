@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_payroll_extenstion_hr_payroll_extenstion,hr_payroll_extenstion.hr_payroll_extenstion,model_hr_payroll_extenstion_hr_payroll_extenstion,base.group_user,1,1,1,1
+access_payroll_register,access_payroll_register,model_payroll_register,base.group_user,1,1,1,1
+access_payroll_adjustment,access_payroll_adjustment,model_payroll_adjustment,base.group_user,1,1,1,1
+access_adjustment_type,access_adjustment_type,model_adjustment_type,base.group_user,1,1,1,1
+access_adjustment_type_line,access_adjustment_type_line,model_adjustment_type_line,base.group_user,1,1,1,1

@@ -18,7 +18,8 @@
     'depends': ['base', 'hr_payroll'],
 
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'security/ir.model.access.csv',
+        'views/payroll_adjustment_views.xml',
+        'wizard/payroll_register_view.xml',
     ],
 }
