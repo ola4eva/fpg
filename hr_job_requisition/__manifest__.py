@@ -20,6 +20,8 @@
     'data': [
         'security/access_groups.xml',
         'security/ir.model.access.csv',
+        'data/email_data.xml',
+        'data/ir_sequence.xml',
         'views/job_requisition_views.xml',
     ],
 }

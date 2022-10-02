@@ -28,18 +28,67 @@
             <field name="state" widget="statusbar" />
           </header>
           <sheet>
-            <group>
-              <group>
+            <div class="oe_title">
+              <h1>  
                 <field name="name" />
-                <field name="date_hire" />
+              </h1>
+            </div>
+            <group>
+              <group string="Position Information">
+                <field name="job_id" />
                 <field name="department_id" />
               </group>
               <group>
                 <field name="type" />
                 <field name="management_level" />
                 <field name="number_vacancy" />
+                <field name="address" />
+              </group>
+              <group>
+              <field name="parent_job_id" />
+                <field name="classification" />
+                <field name="date_hire" />
               </group>
             </group>
+            <div>
+              <span>
+                  A. What are the top 5 critical tasks/accountability of this job?
+              </span>
+              <field name="critical_task_ids" nolabel="1">
+                <tree string="Critical Tasks">
+                  <field name="name" nolabel="1" />
+                  <field name="requisition_id" context="{'default_requisition_id': active_id}" nolabel="1" invisible="0" />
+                </tree>
+              </field>
+            </div>
+            <div>
+              <span>
+                  B. What are the key skills/competencies required for this job?
+              </span>
+              <field name="key_skill_ids" nolabel="1">
+                <tree>
+                  <field name="name" nolabel="1" />
+                  <field name="requisition_id" context="{'default_requisition_id': active_id}" nolabel="1" invisible="0" />
+                </tree>
+              </field>
+            </div>
+            <div>
+              <span class="oe_inline">C. Does this job have direct reports? </span>
+              <field name="have_direct_reports" class="oe_inline" />
+            </div>
+            <div class="oe_inline">
+              <span class="oe_inline">If so, how many people in total report to this position? </span>
+              <field name="number_reports" class="oe_inline" />
+            </div>
+            <div>
+              <span class="oe_inline">How many job levels do they represent? </span> 
+              <field class="oe_inline" name="number_report_levels"/>
+            </div>
+            <group string="E. Service Details">
+              <div>
+                <span
+              </div>
+            </div>
           </sheet>
           <div class="oe_chatter">
             <field name="message_follower_ids"/>
