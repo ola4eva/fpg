@@ -29,7 +29,7 @@
           </header>
           <sheet>
             <div class="oe_title">
-              <h1>  
+              <h1>
                 <field name="name" />
               </h1>
             </div>
@@ -45,11 +45,13 @@
                 <field name="address" />
               </group>
               <group>
-              <field name="parent_job_id" />
+                <field name="parent_job_id" />
                 <field name="classification" />
                 <field name="date_hire" />
               </group>
             </group>
+
+            <!-- Critical Tasks -->
             <div>
               <span>
                   A. What are the top 5 critical tasks/accountability of this job?
@@ -61,6 +63,8 @@
                 </tree>
               </field>
             </div>
+
+            <!-- Key skills -->
             <div>
               <span>
                   B. What are the key skills/competencies required for this job?
@@ -72,6 +76,8 @@
                 </tree>
               </field>
             </div>
+
+            <!-- Direct Reports -->
             <div>
               <span class="oe_inline">C. Does this job have direct reports? </span>
               <field name="have_direct_reports" class="oe_inline" />
@@ -81,50 +87,163 @@
               <field name="number_reports" class="oe_inline" />
             </div>
             <div>
-              <span class="oe_inline">How many job levels do they represent? </span> 
+              <span class="oe_inline">How many job levels do they represent? </span>
               <field class="oe_inline" name="number_report_levels"/>
             </div>
-            <group string="E. Service Details">
-              <div>
-                <span
-              </div>
+
+            <!-- Positions Qualifications -->
+            <group string="D. Provide information regarding the position’s qualifications including those most critical to a successful hire." />
+            <div>
+              <span class="oe_inline">Education </span>
+              <field class="oe_inline" name="education" />
             </div>
-          </sheet>
-          <div class="oe_chatter">
-            <field name="message_follower_ids"/>
-            <field name="message_ids"/>
+            <div>
+              <span class="oe_inline">Experience </span>
+              <field class="oe_inline" name="experience" />
+            </div>
+            <div>
+              <span class="oe_inline">Certifications </span>
+              <field class="oe_inline" name="certifications" />
+            </div>
+            <div>
+              <span class="oe_inline">Skills </span>
+              <field class="oe_inline" name="skill_ids" widget="many2many_tags" />
+            </div>
+            <div>
+              <span class="oe_inline">Special Equipment Used </span>
+              <field class="oe_inline" name="special_equipment_used" />
+            </div>
+            <div>
+              <span class="oe_inline">Special Working Conditions </span>
+              <field class="oe_inline" name="special_working_conditions" />
+            </div>
+            <div>
+              <span class="oe_inline">Others </span>
+              <field class="oe_inline" name="other_qualifications" />
+            </div>
+
+            <!-- Service Details -->
+            <group string="E. Service Details" />
+            <div>
+              <field name="full_or_part_time" widget="radio" />
+            </div>
+            <div>
+              <span class="oe_inline">Full Time Equivalent </span>
+              <field class="oe_inline" name="full_time_equivalent" />
+            </div>
+            <div>
+              <span class="oe_inline">Anticipated Number of Hours/Week </span>
+              <field class="oe_inline" name="hours_per_week" />
+            </div>
+            <div>
+              <span class="oe_inline">Anticipated Length of Service (for temporary hires) </span>
+              <field class="oe_inline" name="length_of_service" />
+            </div>
+            <div>
+              <span class="oe_inline">Requested Start Date </span>
+              <field class="oe_inline" name="requested_start_date" />
+            </div>
+
+            <!-- Compensation Planning -->
+            <group string="F. Compensation Planning"/>
+            <div>
+              <span class="oe_inline">Anticipated Wage/Salary (provide a possible range) </span>
+              From <field class="oe_inline" name="min_salary" />
+              To <field class="oe_inline" name="max_salary" />
           </div>
-        </form>
-      </field>
-    </record>
+          <div>
+            <span class="oe_inline">Salary Grade (if applicable) </span>
+            <field class="oe_inline" name="salary_grade" />
+          </div>
 
-    <record id="hr_job_requisition.job_requisition_view_search" model="ir.ui.view">
-      <field name="name">hr_job_requisition.job_requisition.view.search</field>
-      <field name="model">hr_job_requisition.job_requisition</field>
-      <field name="arch" type="xml">
-        <search string="Job Requisition">
-          <field name="name" />
-          <field name="date_hire" />
-          <field name="state" />
-          <field name="department_id" />
-        </search>
-      </field>
-    </record>
+          <!-- Budget Information -->
+          <separator string="G. Budget information and business justifications for filling the position (please be detailed and specific)"/>
+          <group col="4">
+            <group colspan="4" col="4">
+              <field name="budget_annual_salary" colspan="2" />
+              <field name="benefits" colspan="2" />
+              <field name="other_expenses" colspan="2" />
+            </group>
+          </group>
 
-    <record id="job_requisition_action" model="ir.actions.act_window">
-      <field name="name">Job Requisition</field>
-      <field name="res_model">hr_job_requisition.job_requisition</field>
-      <field name="view_mode">tree,form</field>
-      <field name="domain">[]</field>
-      <field name="context">{}</field>
-      <field name="help" type="html">
-        <p class="oe_no_content_create">Click to create a new job Requisition</p>
-      </field>
-    </record>
+          <group string="H. Type of Action:" col="1">
+            <field name="action_type" col="1" colspan="1"/>
+            <div>
+              <label for="exit_reason" />
+              <field name="exit_employee_id" />
+              <field name="exit_date" />
+              <field name="exit_reason" />
+            </div>
+            <div>
+              <span class="oe_inline">If this is a reallocation of resources, please provide details. </span>
+              <field name="reallocation_details" />
+            </div>
+            <div>
+              <span class="oe_inline">If this position is currently vacant how is the work getting done? </span>
+              <field name="coping_strategy_vacant_position" />
+            </div>
+            <div>
+              <span class="oe_inline">What is the impact on the company if this position is left vacant? </span>
+              <field name="impact_left_vacant" />
+            </div>
+            <div>
+              <span class="oe_inline">Could the work be distributed among other positions instead of filling this position? </span>
+              <field name="distributable_among_others" />
+            </div>
+            <div>
+              <span class="oe_inline">Could the position be filled by a less skilled, less experienced, and less expensive employee? </span>
+              <field name="filled_by_less_experience" />
+            </div>
+            <div>
+              <span class="oe_inline">Could a part time or temporary employee perform the tasks of this position? </span>
+              <field name="performed_by_part_time" />
+            </div>
+            <div>
+              <span>How does this position impact: </span>
+              <group>
+                <field name="revenue_impact" />
+                <field name="customer_service_impact" />
+                <field name="other_functions_impact" />
+              </group>
+            </div>
+          </group>
 
-    <menuitem id="hr_job_requisition_menu" name="Job Requisition" sequence="10"/>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids"/>
+          <field name="message_ids"/>
+        </div>
+      </form>
+    </field>
+  </record>
 
-    <menuitem id="hr_job_requisition_menu_action" name="Job Requisition" action="job_requisition_action" parent="hr_job_requisition_menu" sequence="1"/>
+  <record id="hr_job_requisition.job_requisition_view_search" model="ir.ui.view">
+    <field name="name">hr_job_requisition.job_requisition.view.search</field>
+    <field name="model">hr_job_requisition.job_requisition</field>
+    <field name="arch" type="xml">
+      <search string="Job Requisition">
+        <field name="name" />
+        <field name="date_hire" />
+        <field name="state" />
+        <field name="department_id" />
+      </search>
+    </field>
+  </record>
 
-  </data>
+  <record id="job_requisition_action" model="ir.actions.act_window">
+    <field name="name">Job Requisition</field>
+    <field name="res_model">hr_job_requisition.job_requisition</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[]</field>
+    <field name="context">{}</field>
+    <field name="help" type="html">
+      <p class="oe_no_content_create">Click to create a new job Requisition</p>
+    </field>
+  </record>
+
+  <menuitem id="hr_job_requisition_menu" name="Job Requisition" sequence="10"/>
+
+  <menuitem id="hr_job_requisition_menu_action" name="Job Requisition" action="job_requisition_action" parent="hr_job_requisition_menu" sequence="1"/>
+
+</data>
 </odoo>
