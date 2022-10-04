@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from datetime import date
+from odoo import models, fields, api, _
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -12,7 +13,7 @@ class JobRequisition(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Name", readonly=True, default="/")
-    description = fields.Char(string="Description", readonly=True, default="/")
+    description = fields.Char(string="Description")
     type = fields.Selection(
         [
             ("temporary", "Temporary Hire"),
@@ -173,42 +174,111 @@ class JobRequisition(models.Model):
     )
 
     # J. Approvals
-    hiring_manager_id = fields.Many2one("hr.employee", string="Hiring Manager")
-    date_submitted = fields.Date(string="Date")
-    hiring_manager_job_id = fields.Many2one("hr.job", string="Position")
-    approver_id = fields.Many2one("hr.employee", string="Supervisor of Hiring Manager")
-    date_approved = fields.Date(string="Date")
-    supervisor_job_id = fields.Many2one("hr.job", string="Position")
-    hr_approver_id = fields.Many2one("hr.employee", string="Human Resource Manager")
-    date_hr_approved = fields.Date(string="Date")
-    hr_manager_job_id = fields.Many2one("hr.job", string="Position")
+    hiring_manager_id = fields.Many2one(
+        "hr.employee", string="Hiring Manager", copy=False
+    )
+    date_submitted = fields.Date(string="Date", copy=False)
+    hiring_manager_job_id = fields.Many2one("hr.job", string="Position", copy=False)
+    supervisor_id = fields.Many2one(
+        "hr.employee", string="Supervisor of Hiring Manager", copy=False
+    )
+    date_approved = fields.Date(string="Date", copy=False)
+    supervisor_job_id = fields.Many2one("hr.job", string="Position", copy=False)
+    hr_approver_id = fields.Many2one(
+        "hr.employee", string="Human Resource Manager", copy=False
+    )
+    date_hr_approved = fields.Date(string="Date", copy=False)
+    hr_manager_job_id = fields.Many2one("hr.job", string="Position", copy=False)
+    job_position_id = fields.Many2one(
+        comodel_name="hr.job", string="Job Position", copy=False
+    )
 
     @api.model
     def create(self, vals):
         vals["name"] = self.env["ir.sequence"].sudo().next_by_code("job.requisition")
         return super().create(vals)
+    
+    def action_view_job_positions(self):
+        return {
+            'name': _('Job Positions'),
+            'view_mode': 'form',
+            'res_model': 'hr.job',
+            'view_id': self.env.ref('hr.view_hr_job_form').id,
+            'type': 'ir.actions.act_window',
+            'res_id': self.job_position_id.id,
+        }
 
     def action_submit(self):
-        self.state = "open"
-        
+        employee_id = (
+            self.env["hr.employee"]
+            .sudo()
+            .search([("user_id", "=", self.env.user.id)], limit=1)
+        )
+        job_id = employee_id and employee_id.job_id
+        self.update(
+            {
+                "hiring_manager_id": employee_id and employee_id.id or False,
+                "hiring_manager_job_id": job_id and job_id.id or False,
+                "date_submitted": date.today(),
+                "state": "open",
+            }
+        )
+        return True
+
     def action_approve(self):
-        self.state = 'approve'
-        
+        employee_id = (
+            self.env["hr.employee"]
+            .sudo()
+            .search([("user_id", "=", self.env.user.id)], limit=1)
+        )
+        job_id = employee_id and employee_id.job_id
+        self.update(
+            {
+                "supervisor_id": employee_id and employee_id.id or False,
+                "supervisor_job_id": job_id and job_id.id or False,
+                "date_approved": date.today(),
+                "state": "approve",
+            }
+        )
+        return True
+
     def action_hr_approve(self):
+        employee_id = (
+            self.env["hr.employee"]
+            .sudo()
+            .search([("user_id", "=", self.env.user.id)], limit=1)
+        )
+        job_id = employee_id and employee_id.job_id
+
         HrJob = self.env["hr.job"].sudo()
-        job_id = None
+        job_position_id = None
         try:
-            job_id = HrJob.create(
+            job_position_id = HrJob.create(
                 {
                     "name": self.description,
                     "expected_employees": self.number_vacancy,
+                    # "number_of_recruitment": self.number_vacancy,
+                    "address_id": self.env.user.company_id.id,
+                    "department_id": self.department_id and self.department_id.id,
+                    "user_id": employee_id
+                    and employee_id.user_id
+                    and employee_id.user_id.id
+                    or False,
                 }
             )
         except Exception as e:
             _logger.error(f"Error {e} while creating Job Position")
         else:
-            _logger.info(f"Job {job_id.name} was created successfully")
-        self.state = "done"
+            self.job_position_id = job_position_id and int(job_position_id)
+            _logger.info(f"Job {job_position_id.name} was created successfully")
+        self.update(
+            {
+                "hr_approver_id": employee_id and employee_id.id or False,
+                "hr_manager_job_id": job_id and job_id.id or False,
+                "date_hr_approved": date.today(),
+                "state": "done",
+            }
+        )
 
     def action_reject(self):
         self.state = "reject"

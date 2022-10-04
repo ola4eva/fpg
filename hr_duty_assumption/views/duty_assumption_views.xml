@@ -93,7 +93,7 @@
       </field>
     </record>
 
-    <menuitem id="assumption_of_duty_menu" name="Assumption of Duty" sequence="10"/>
+    <menuitem id="assumption_of_duty_menu" name="Assumption of Duty" sequence="10" web_icon="hr_duty_assumption,static/description/icon.png"/>
 
     <menuitem id="assumption_of_duty_action_menu" name="Assumption of Duty" action="hr_assumption_of_duty_action" parent="assumption_of_duty_menu" />
 
