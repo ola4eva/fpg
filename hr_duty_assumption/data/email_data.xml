@@ -2,51 +2,41 @@
 <odoo>
 
     <data noupdate="0">
+
+        <record id="submit_email" model="mail.template">
+            <field name="name">Duty Assumption Submission</field>
+            <field name="subject">{{ object.employee_id.name }} Has Assumed Duty</field>
+            <field name="email_from">{{ user.email }}</field>
+            <field name="email_to">babawaleolalekan@gmail.com</field>
+            <field name="model_id" ref="model_hr_duty_assumption_hr_duty_assumption" />
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear Sir/Ma,</p>
+                    <br/>
+                    <p>Assumption of Duty <t t-out="object.name" /> submitted for your approval</p>
+                    <p>Best Regards,</p>
+                    <p><t t-out="user.name" /></p>
+                </div>
+            </field>
+        </record>
     
-        <record id="submit" model="mail.template">
+        <record id="approve_email" model="mail.template">
             <field name="name">Duty Assumption Submission</field>
             <field name="subject">{{ object.employee_id.name }} Has Assumed Duty</field>
-            <field name="email_from">{{ user.company_id.email }}</field>
-            <field name="email_to">babawaleolalekan@gmail.com</field>
+            <field name="email_from">{{ user.email }}</field>
+            <field name="email_to">{{ ('' if not ctx.get('recipients') else ','.join(ctx.get("recipients").mapped("email_formatted"))) }}</field>
             <field name="model_id" ref="model_hr_duty_assumption_hr_duty_assumption" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear</p>
-                    <p>The new hire has assumed duty</p>
+                    <p>Dear Sir/Ma,</p>
+                    <br/>
+                    <p><h4 style="background: #688ba6; radius: 2px">Assumption of Duty</h4></p>
+                    <p>We confirm that the above-named assumed duty with the Bank with effect from <t t-out="object.date_assume_duty_bank" />. Our letter of appointment dated 
+                    <t t-out="letter_of_appointment_date"/> refers. Employee number: <t t-out='object.employee_number'/></p>
+                    
                     <p>Best Regards,</p>
-                    <p>Administrator.</p>
-                </div>
-            </field>
-        </record>
-
-        <record id="confirm" model="mail.template">
-            <field name="name">Duty Assumption Submission</field>
-            <field name="subject">{{ object.employee_id.name }} Has Assumed Duty</field>
-            <field name="email_from">{{ user.company_id.email }}</field>
-            <field name="email_to">babawaleolalekan@gmail.com</field>
-            <field name="model_id" ref="model_hr_duty_assumption_hr_duty_assumption" />
-            <field name="body_html" type="html">
-                <div style="margin: 0px; padding: 0px;">
-                    <p>Dear</p>
-                    <p>I hereby confirm that the new hire has assumed duty</p>
-                    <p>Best Regards,</p>
-                    <p>Administrator.</p>
-                </div>
-            </field>
-        </record>
-
-        <record id="approve" model="mail.template">
-            <field name="name">Duty Assumption Submission</field>
-            <field name="subject">{{ object.employee_id.name }} Has Assumed Duty</field>
-            <field name="email_from">{{ user.company_id.email }}</field>
-            <field name="email_to">babawaleolalekan@gmail.com</field>
-            <field name="model_id" ref="model_hr_duty_assumption_hr_duty_assumption" />
-            <field name="body_html" type="html">
-                <div style="margin: 0px; padding: 0px;">
-                    <p>Dear</p>
-                    <p>I hereby approve that the new hire has assumed duty</p>
-                    <p>Best Regards,</p>
-                    <p>Administrator.</p>
+                    <p><t t-out="user.name" /></p>
+                    <p>For: HEAD (HUMAN CAPITAL MANAGEMENT)</p>
                 </div>
             </field>
         </record>

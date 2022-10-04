@@ -28,19 +28,17 @@
       <field name="arch" type="xml">
         <form string="Assumption of Duty">
           <header>
-            <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft" />
-            <button name="action_validate" string="Submit" type="object" class="oe_highlight" states="submit" />
-            <button name="action_approve" string="Submit" type="object" class="oe_highlight" states="validate" />
-            <button name="action_cancel" string="Submit" type="object" class="oe_highlight" states="draft" />
-            <button name="action_reject" string="Submit" type="object" class="oe_highlight" states="submit" />
-            <field name="state" widget="statusbar" statusbar_visible="draft,submit,validate,approve" />
+            <button name="action_submit" string="Confirm" type="object" class="oe_highlight" states="draft" groups="hr_duty_assumption.group_user" />
+            <button name="action_cancel" string="Cancel" type="object" states="draft" groups="hr_duty_assumption.group_user" />
+            <button name="action_approve" string="Approve" type="object" class="oe_highlight" states="submit" groups="hr_duty_assumption.group_manager" />
+            <button name="action_reject" string="Rejected" type="object" class="btn btn-danger" states="submit" groups="hr_duty_assumption.group_manager" />
+            <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve" />
           </header>
           <sheet>
             <group>
               <group>
                 <field name="name" />
                 <field name="employee_id" />
-                <field name="employee_number" />
                 <field name="position" />
                 <field name="department_id" />
               </group>
@@ -52,7 +50,40 @@
                 <field name="place" />
                 <field name="supervisor_id" />
               </group>
+              <group string="Account Numbers">
+                <field name="bank_ids" widget="many2many_tags" options="{'no_open_create': True}" nolabel="1" />
+              </group>
+              <group string="Pension Information">
+                <field name="pension_info_ids" nolabel="1">
+                  <tree string="Pension Information" editable="bottom">
+                    <field name="pfa_id" />
+                    <field name="reg_no" />
+                    <field name="duty_assumption_id" invisible="1"/>
+                  </tree>
+                </field>
+              </group>
+              <group colspan="2">
+                <separator string="Submitted By" colspan="2" />
+                <group>
+                  <field name="user_id" />
+                </group>
+                <group>
+                  <field name="date_submitted" string="Date" />
+                </group>
+              </group>
             </group>
+            <hr/>
+            <div class="text-center"><u>FOR HEAD OFFICE USE</u></div>
+            <div>
+              <p>TO: Officer (Pay-roll)
+                
+                We confirm that the above-named assumed duty with the Bank with effect from <field name="date_assume_duty_bank" /> Our letter of appointment dated <field name="letter_of_appointment_date" /> refers.
+                
+                Employee number: <field name="employee_number" />
+              </p>
+
+              <p>for: HEAD (HUMAN CAPITAL MANAGEMENT</p>
+            </div>
           </sheet>
           <div class="oe_chatter">
             <field name="message_follower_ids"/>

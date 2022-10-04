@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from datetime import date
+from odoo import models, fields
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class HrDutyAssumption(models.Model):
@@ -21,22 +25,24 @@ class HrDutyAssumption(models.Model):
     date_assumption = fields.Date(string="Date Assumed Duty")
     place = fields.Char(string="Place of Assumption")
     supervisor_id = fields.Many2one(comodel_name="hr.employee", string="Supervisor")
-    # pfa_name= fields.Char(string="", )
-
-    # TODO
-    # 1. Add chatter to the form view
-    # 2. Add menu for pfa's
-    # 3. Add fuctionality to object methods
-    # 4. Clean up the form view
+    bank_ids = fields.Many2many("res.partner.bank", string="Account Numbers")
+    pension_info_ids = fields.One2many(
+        comodel_name="hr_duty_assumption.pension.information",
+        inverse_name="duty_assumption_id",
+        string="Pension Information",
+    )
+    date_assume_duty_bank = fields.Date('Date Assumed Duty With Bank')
+    letter_of_appointment_date = fields.Date('Letter of Appointment Date')
+    user_id = fields.Many2one('res.users', string='User')
+    date_submitted = fields.Date('Date')
 
     state = fields.Selection(
         [
             ("draft", "New"),
-            ("submit", "To Validate"),
-            ("validate", "To approve"),
+            ("submit", "To Approve"),
             ("approve", "Approved"),
             ("cancel", "Cancelled"),
-            ("reject", "Rejected"),
+            ("reject", "Rejected")
         ],
         string="State",
         readonly=True,
@@ -45,23 +51,65 @@ class HrDutyAssumption(models.Model):
     )
 
     def action_submit(self):
-        pass
-
-    def action_validate(self):
-        pass
-
+        email_template = self.env.ref("hr_duty_assumption.submit_email")
+        group_hr_payroll_offier = self.env.ref('hr_duty_assumption.group_manager')
+        recipients = group_hr_payroll_offier.users.mapped('partner_id')
+        ctx = self.env.context.copy()
+        ctx['recipients'] = recipients
+        try:
+            email_template.with_context(ctx).send_mail(self.id, force_send=True)
+        except:
+            _logger.error("Unable to send duty assumption email")
+        return self.update(
+            {
+                "state": "submit",
+            }
+        )
+        
+        
     def action_approve(self):
-        pass
+        # send an email to payroll officer
+        email_template = self.env.ref("hr_duty_assumption.approve_email")
+        group_hr_payroll_offier = self.env.ref('hr_payroll.group_hr_payroll_user')
+        recipients = group_hr_payroll_offier.users.mapped('partner_id')
+        ctx = self.env.context.copy()
+        ctx['recipients'] = recipients
+        try:
+            email_template.with_context(ctx).send_mail(self.id, force_send=True)
+        except:
+            _logger.error("Unable to send duty assumption email")
+        return self.update(
+            {
+                "state": "approve",
+                "date_submitted": date.today(),
+                "user_id": self.env.user.id,
+            }
+        )
 
     def action_cancel(self):
-        pass
-
+        self.update({"state": "cancel"})
+        
     def action_reject(self):
-        pass
+        self.update({"state": "reject"})
+
+
+class PensionFundDetails(models.Model):
+    _name = "hr_duty_assumption.pension.information"
+    _description = "Pension Fund Information"
+
+    pfa_id = fields.Many2one(
+        "pension.fund.administrator", string="Pension Fund Adminstrator"
+    )
+    start_date = fields.Date("start_date")
+    reg_no = fields.Char("RSA Number")
+    duty_assumption_id = fields.Many2one(
+        comodel_name="hr_duty_assumption.hr_duty_assumption",
+        string="Assumption of Duty",
+    )
 
 
 class PensionAdministrator(models.Model):
-    _name = "hr_duty_assumption.pfa"
+    _name = "pension.fund.administrator"
     _description = "Pension Fund Administrator"
 
     name = fields.Char(string="Name")
