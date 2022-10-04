@@ -15,7 +15,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['base', 'hr'],
+    'depends': ['base', 'hr', 'hr_recruitment'],
 
     'data': [
         'security/access_groups.xml',

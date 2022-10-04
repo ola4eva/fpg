@@ -25,7 +25,7 @@
             <button name="action_approve" string="Approve" type="object" class="oe_highlight" states="open" />
             <button name="action_reject" string="Reject" type="object" class="btn btn-danger" states="open" />
             <button name="action_cancel" string="Cancel" type="object" class="btn btn-primary" states="draft" />
-            <field name="state" widget="statusbar" />
+            <field name="state" widget="statusbar" statusbar_visible="draft,open,approve" />
           </header>
           <sheet>
             <div class="oe_title">
@@ -207,7 +207,38 @@
               </group>
             </div>
           </group>
-
+          <group string="I. List any other information that might be helpful in the recruitment and hiring for this position">
+            <field nolabel="1" name="other_recruitment_info_ids" />
+          </group>
+          <group string="J. Approvals" col="3">
+            <group>
+              <field name="hiring_manager_id" />
+            </group>
+            <group>
+              <field name="hiring_manager_job_id" />
+            </group>
+            <group>
+              <field name="date_submitted" />
+            </group>
+            <group>
+              <field name="approver_id" />
+            </group>
+            <group>
+              <field name="supervisor_job_id" />
+            </group>
+            <group>
+              <field name="date_approved" />
+            </group>
+            <group>
+              <field name="hr_approver_id" />
+            </group>
+            <group>
+              <field name="hr_manager_job_id" />
+            </group>
+            <group>
+              <field name="date_hr_approved" />
+            </group>
+          </group>
         </sheet>
         <div class="oe_chatter">
           <field name="message_follower_ids"/>

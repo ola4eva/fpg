@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class JobRequisition(models.Model):
@@ -9,6 +12,7 @@ class JobRequisition(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Name", readonly=True, default="/")
+    description = fields.Char(string="Description", readonly=True, default="/")
     type = fields.Selection(
         [
             ("temporary", "Temporary Hire"),
@@ -82,7 +86,7 @@ class JobRequisition(models.Model):
     education = fields.Char("Education")
     experience = fields.Char("Experience")
     certifications = fields.Char("Certifications/Licenses")
-    skill_ids = fields.Many2many('hr.skill', string='Skills')
+    skill_ids = fields.Many2many("hr.skill", string="Skills")
     special_equipment_used = fields.Char("Special Equipment Used")
     special_working_conditions = fields.Char("Special Working Conditions")
     other_qualifications = fields.Char("Others")
@@ -127,7 +131,9 @@ class JobRequisition(models.Model):
 
     exit_employee_id = fields.Many2one("hr.employee", string="Exiting employee")
     exit_date = fields.Date(string="Exit Date")
-    exit_reason = fields.Char(string="If this is a replacement position, please describe who is leaving, when and why.")
+    exit_reason = fields.Char(
+        string="If this is a replacement position, please describe who is leaving, when and why."
+    )
     reallocation_details = fields.Char("Reallocation Details")
     coping_strategy_vacant_position = fields.Char(string="How is work getting done?")
     impact_left_vacant = fields.Char(
@@ -159,16 +165,21 @@ class JobRequisition(models.Model):
     other_functions_impact = fields.Char("Other Critical Company Functions")
 
     # I. List any other information that might be helpful in the recruitment and hiring for this position.
+    other_recruitment_info_ids = fields.One2many(
+        "hr_job_requisition.recruitment.info",
+        "requisition_id",
+        string="Other Recruitment Information",
+    )
 
     # J. Approvals
-    user_id = fields.Many2one("hr.employee", string="user")
-    date_submitted = fields.Date(string="Date of Submission")
+    hiring_manager_id = fields.Many2one("hr.employee", string="Hiring Manager")
+    date_submitted = fields.Date(string="Date")
     hiring_manager_job_id = fields.Many2one("hr.job", string="Position")
-    approver_id = fields.Many2one("hr.employee", string="approver")
-    date_submitted = fields.Date(string="Date of Submission")
+    approver_id = fields.Many2one("hr.employee", string="Supervisor of Hiring Manager")
+    date_approved = fields.Date(string="Date")
     supervisor_job_id = fields.Many2one("hr.job", string="Position")
-    hr_approver_id = fields.Many2one("hr.employee", string="HR")
-    date_hr_approved = fields.Date(string="Date of Submission")
+    hr_approver_id = fields.Many2one("hr.employee", string="Human Resource Manager")
+    date_hr_approved = fields.Date(string="Date")
     hr_manager_job_id = fields.Many2one("hr.job", string="Position")
 
     @api.model
@@ -180,6 +191,19 @@ class JobRequisition(models.Model):
         self.state = "open"
 
     def action_approve(self):
+        HrJob = self.env["hr.job"].sudo()
+        job_id = None
+        try:
+            job_id = HrJob.create(
+                {
+                    "name": self.description,
+                    "expected_employees": self.number_vacancy,
+                }
+            )
+        except Exception as e:
+            _logger.error(f"Error {e} while creating Job Position")
+        else:
+            _logger.info(f"Job {job_id.name} was created successfully")
         self.state = "approve"
 
     def action_reject(self):
@@ -221,8 +245,9 @@ class JobRequisitionTask(models.Model):
         "hr_job_requisition.job_requisition", string="Requisition"
     )
 
+
 class HrSkill(models.Model):
     _name = "hr.skill"
     _description = "Relevant Skills"
-    
-    name = fields.Char(string='Skill')
+
+    name = fields.Char(string="Skill")
