@@ -24,6 +24,8 @@
             <button name="action_submit" string="Submit" type="object" states="draft" />
             <button name="action_approve" string="Approve" type="object" class="oe_highlight" states="open" />
             <button name="action_reject" string="Reject" type="object" class="btn btn-danger" states="open" />
+            <button name="action_hr_approve" string="HR Approve" type="object" class="oe_highlight" states="approve" />
+            <button name="action_reject" string="Reject" type="object" class="btn btn-danger" states="approve" />
             <button name="action_cancel" string="Cancel" type="object" class="btn btn-primary" states="draft" />
             <field name="state" widget="statusbar" statusbar_visible="draft,open,approve" />
           </header>
@@ -34,6 +36,8 @@
               </h1>
             </div>
             <group>
+              <field name="description" />
+              <div class="oe_separator" />
               <group string="Position Information">
                 <field name="job_id" />
                 <field name="department_id" />

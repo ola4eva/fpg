@@ -47,7 +47,8 @@ class JobRequisition(models.Model):
         [
             ("draft", "New"),
             ("open", "To approve"),
-            ("approve", "Approved"),
+            ("approve", "HR To Approve"),
+            ("done", "Approved"),
             ("reject", "Rejected"),
             ("cancel", "Cancelled"),
         ],
@@ -189,8 +190,11 @@ class JobRequisition(models.Model):
 
     def action_submit(self):
         self.state = "open"
-
+        
     def action_approve(self):
+        self.state = 'approve'
+        
+    def action_hr_approve(self):
         HrJob = self.env["hr.job"].sudo()
         job_id = None
         try:
@@ -204,7 +208,7 @@ class JobRequisition(models.Model):
             _logger.error(f"Error {e} while creating Job Position")
         else:
             _logger.info(f"Job {job_id.name} was created successfully")
-        self.state = "approve"
+        self.state = "done"
 
     def action_reject(self):
         self.state = "reject"
