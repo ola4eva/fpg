@@ -15,7 +15,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['base', 'hr_payroll'],
+    'depends': ['base', 'hr_payroll', 'hr_payroll_account'],
 
     'data': [
         'security/ir.model.access.csv',
