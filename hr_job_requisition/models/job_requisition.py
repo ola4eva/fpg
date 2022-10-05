@@ -192,11 +192,6 @@ class JobRequisition(models.Model):
     job_position_id = fields.Many2one(
         comodel_name="hr.job", string="Job Position", copy=False
     )
-
-    @api.model
-    def create(self, vals):
-        vals["name"] = self.env["ir.sequence"].sudo().next_by_code("job.requisition")
-        return super().create(vals)
     
     def action_view_job_positions(self):
         return {
@@ -221,6 +216,7 @@ class JobRequisition(models.Model):
                 "hiring_manager_job_id": job_id and job_id.id or False,
                 "date_submitted": date.today(),
                 "state": "open",
+                "name": self.env["ir.sequence"].sudo().next_by_code("job.requisition"),
             }
         )
         return True
