@@ -155,7 +155,7 @@
             </div>
 
             <!-- Compensation Planning -->
-            <group string="F. Compensation Planning"/>
+            <!-- <group string="F. Compensation Planning"/>
             <div>
               <span class="oe_inline">Anticipated Wage/Salary (provide a possible range) </span>
               From <field class="oe_inline" name="min_salary" />
@@ -164,7 +164,7 @@
           <div>
             <span class="oe_inline">Salary Grade (if applicable) </span>
             <field class="oe_inline" name="salary_grade" />
-          </div>
+          </div> -->
 
           <!-- Budget Information -->
           <separator string="G. Budget information and business justifications for filling the position (please be detailed and specific)"/>
@@ -176,7 +176,7 @@
             </group>
           </group>
 
-          <group string="H. Type of Action:" col="1">
+          <!-- <group string="H. Type of Action:" col="1">
             <field name="action_type" col="1" colspan="1"/>
             <div>
               <label for="exit_reason" />
@@ -219,7 +219,7 @@
           </group>
           <group string="I. List any other information that might be helpful in the recruitment and hiring for this position">
             <field nolabel="1" name="other_recruitment_info_ids" />
-          </group>
+          </group> -->
           <group string="J. Approvals" col="3">
             <group>
               <field name="hiring_manager_id" />
