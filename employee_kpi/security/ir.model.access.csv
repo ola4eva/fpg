@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_kpi_employee_kpi,employee_kpi.employee_kpi,model_employee_kpi_employee_kpi,base.group_user,1,1,1,1
+access_employee_kpi_employee_kpi_type,employee_kpi.employee_kpi_type,model_employee_kpi_employee_kpi_type,base.group_user,1,1,1,1

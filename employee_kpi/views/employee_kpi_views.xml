@@ -1,0 +1,100 @@
+<odoo>
+  <data>
+
+    <record id="employee_kpi_view_tree" model="ir.ui.view">
+      <field name="name">employee_kpi.view.tree</field>
+      <field name="model">employee_kpi.employee_kpi</field>
+      <field name="arch" type="xml">
+        <tree string="Employee KPI">
+          <field name="name" />
+          <field name="employee_id" />
+          <field name="job_id" />
+          <field name="department_id" />
+          <field name="state" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="employee_kpi_view_form" model="ir.ui.view">
+      <field name="name">employee.kpi.view.form</field>
+      <field name="model">employee_kpi.employee_kpi</field>
+      <field name="arch" type="xml">
+        <form string="Employee KPI">
+          <header>
+            <button name="action_submit" string="Submit for Assessment" type="object" class="oe_highlight" states="draft" />
+            <field name="state" widget="statusbar" />
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="name" />
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="employee_id" />
+                <field name="job_id" />
+                <field name="department_id" />
+                <field name="period" placeholder="FY2022/2023..."/>
+                <field name="parent_id" />
+                <field name="grade_level" />
+                <field name="grade_months" />
+                <field name="kpi_type_id" />
+              </group>
+              <group>
+                <div class="row">
+                  <div class="col-md-11 col-md-offset-1 col-sm-12 no-margin-top" style="background-color: #eee">
+                    <!-- <p class="text-center" style="font-weight: bold;">How do account types affect your reports?</p> -->
+                    <h4>Rating Recommendation:</h4>
+                    <p>1- Below Expectations- 0-50%</p>
+                    <p>2 - Needs Improvement- 51-65%</p>
+                    <p>3 - Meets Expectations- 66-85%</p>
+                    <p>4 - Exceeds Expectations- 86-95%</p>
+                    <p>5 - Outstanding - 96-100%</p>
+                    <br/>
+                    <h4>Rating (for target)</h4>
+                    <p>Low- 25%</p>
+                    <p>Average- 50%</p>
+                    <p>High- 75%</p>
+                    <p>Advanced- 100%</p>
+                  </div>
+                </div>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="employee_kpi_view_search" model="ir.ui.view">
+      <field name="name">employee_kpi.view.search</field>
+      <field name="model">employee_kpi.employee_kpi</field>
+      <field name="arch" type="xml">
+        <search string="Employee KPI">
+          <field name="name" />
+          <field name="state" />
+          <group expand="1" string="Group By">
+            <filter name="status" context="{'group_by': 'state'}" domain="[]" string="Status" />
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record id="employee_kpi_action" model="ir.actions.act_window">
+      <field name="name">Employee KPI</field>
+      <field name="res_model">employee_kpi.employee_kpi</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[]</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p class="oe_no_content_create">Click to create a new employee KPI</p>
+      </field>
+    </record>
+
+    <menuitem id="employee_kpi_root_menu" name="Employee KPI" sequence="10" web_icon="employee_kpi,static/description/icon.png" />
+
+    <menuitem id="employee_kpi_heading_menu" name="Employee KPI" parent="employee_kpi_root_menu" sequence="1"/>
+
+    <menuitem id="employee_kpi_action_menu" name="Employee KPI" action="employee_kpi_action" parent="employee_kpi_heading_menu" sequence="1"/>
+  </data>
+</odoo>
