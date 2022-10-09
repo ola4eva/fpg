@@ -45,7 +45,6 @@
               <group>
                 <div class="row">
                   <div class="col-md-11 col-md-offset-1 col-sm-12 no-margin-top" style="background-color: #eee">
-                    <!-- <p class="text-center" style="font-weight: bold;">How do account types affect your reports?</p> -->
                     <h4>Rating Recommendation:</h4>
                     <p>1- Below Expectations- 0-50%</p>
                     <p>2 - Needs Improvement- 51-65%</p>
@@ -87,9 +86,6 @@
                 <group name="note_group" col="6" class="mt-2 mt-md-0">
                   <group colspan="4" />
                   <group col="1" colspan="2" string="BALANCE SCORE CARD PERSPECTIVES">
-                    <!-- <div class="oe_right">
-                      <label for="score_financial_perspective" />
-                    </div> -->
                     <field name="score_financial_perspective" colspan="4" />
                     <field name="score_operations_perspective" colspan="4" />
                     <field name="score_stakeholder_satisfaction_perspective" colspan="4" />
