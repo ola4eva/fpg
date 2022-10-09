@@ -91,7 +91,7 @@
       </field>
     </record>
 
-    <menuitem id="employee_kpi_root_menu" name="Employee KPI" sequence="10" web_icon="employee_kpi,static/description/icon.png" />
+    
 
     <menuitem id="employee_kpi_heading_menu" name="Employee KPI" parent="employee_kpi_root_menu" sequence="1"/>
 

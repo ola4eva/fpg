@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="employee_kpi_template_view_tree" model="ir.ui.view">
+            <field name="name">employee_kpi_template.view.tree</field>
+            <field name="model">employee_kpi.kpi.template</field>
+            <field name="arch" type="xml">
+                <tree string="KPI Template">
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="create_date" />
+                    <field name="write_date" />
+                    <field name="write_uid" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_kpi_template_view_form" model="ir.ui.view">
+            <field name="name">employee_kpi_template.view.form</field>
+            <field name="model">employee_kpi.kpi.template</field>
+            <field name="arch" type="xml">
+                <form string="KPI Template">
+                    <header>
+                        <button name="action_submit" type="object" string="Confirm" class="oe_highlight" states="draft" />
+                        <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="open" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="user_id" />
+                                <field name="create_date" />
+                            </group>
+                            <group>
+                                <field name="write_date" />
+                                <field name="write_uid" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="key_performance_indicators" string="Key Performance Indicators">
+                                <field name="question_ids">
+                                    <tree>
+                                        <field name="name" />
+                                        <field name="weight" />
+                                        <field name="perspective" />
+                                        <field name="type" />
+                                        <field name="key_area_id" />
+                                        <field name="template_id" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_kpi_template_view_search" model="ir.ui.view">
+            <field name="name">employee_kpi_template.view.search</field>
+            <field name="model">employee_kpi.kpi.template</field>
+            <field name="arch" type="xml">
+                <search string="KPI Template">
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="create_date" />
+                    <field name="write_date" />
+                    <field name="write_uid" />
+                    <field name="state" />
+                </search>
+            </field>
+        </record>
+
+        <record id="employee_kpi_template_action" model="ir.actions.act_window">
+            <field name="name">key Performance Indicators</field>
+            <field name="res_model">employee_kpi.kpi.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_no_content_create">Click to create a new template</p>
+            </field>
+        </record>
+
+        <menuitem id="employee_kpi_root_menu" name="Employee KPI" sequence="10" web_icon="employee_kpi,static/description/icon.png" />
+
+        <menuitem id="employee_kpi_config_menu" name="Configuration" parent="employee_kpi_root_menu" sequence="10"/>
+
+        <menuitem id="employee_kpi_heading_menu" name="Key Performance Indicator" parent="employee_kpi_config_menu" sequence="1"/>
+
+        <menuitem id="employee_kpi_template_menu" name="KPI Template" action="employee_kpi_template_action" parent="employee_kpi_heading_menu" sequence="1"/>
+    </data>
+</odoo>
