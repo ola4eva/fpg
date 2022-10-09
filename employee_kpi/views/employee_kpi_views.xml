@@ -2,7 +2,7 @@
   <data>
 
     <record id="employee_kpi_view_tree" model="ir.ui.view">
-      <field name="name">employee_kpi.view.tree</field>
+      <field name="name">employee.kpi.view.tree</field>
       <field name="model">employee_kpi.employee_kpi</field>
       <field name="arch" type="xml">
         <tree string="Employee KPI">
@@ -40,6 +40,7 @@
                 <field name="grade_level" />
                 <field name="grade_months" />
                 <field name="kpi_type_id" />
+                <field name="template_id" />
               </group>
               <group>
                 <div class="row">
@@ -61,13 +62,61 @@
                 </div>
               </group>
             </group>
+            <notebook>
+              <page name="performance_measurement" string="Performance Measurement">
+                <field name="question_ids" nolabel="1" context="{'default_kpi_id': active_id}">
+                  <tree decoration-bf="is_section" editable="bottom">
+                    <field name="name" />
+                    <field name="weight" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="key_area_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="self_rating" />
+                    <field name="manager_rating" />
+                    <field name="self_final_score" />
+                    <field name="manager_final_score" />
+                    <field name="self_comment" />
+                    <field name="manager_comment" />
+                    <field name="is_section" invisible="1"/>
+                    <field name="kpi_id" invisible="1"/>
+                    <control>
+                      <create name="add_section_control" string="Add a section" context="{'default_is_section': True}"/>
+                      <create name="add_question_control" string="Add a question" />
+                    </control>
+                  </tree>
+                </field>
+                <group name="note_group" col="6" class="mt-2 mt-md-0">
+                  <group colspan="4" />
+                  <group col="1" colspan="2" string="BALANCE SCORE CARD PERSPECTIVES">
+                    <!-- <div class="oe_right">
+                      <label for="score_financial_perspective" />
+                    </div> -->
+                    <field name="score_financial_perspective" colspan="4" />
+                    <field name="score_operations_perspective" colspan="4" />
+                    <field name="score_stakeholder_satisfaction_perspective" colspan="4" />
+                    <field name="score_learning_growth_culture_perspective" colspan="4" />
+                    <field name="score_total" colspan="4" />
+                  </group>
+                  <div class="oe_clear"/>
+                </group>
+              </page>
+            </notebook>
+            <group>
+              <group>
+                <field name="exceptional_achievements" />
+                <field name="areas_of_strength" />
+                <field name="job_improvement_recommendations" />
+                <field name="appraiser_overall_comment" />
+                <field name="appraisee_overall_comment" />
+                <field name="fpg_final_recommendation" />
+              </group>
+            </group>
           </sheet>
         </form>
       </field>
     </record>
 
     <record id="employee_kpi_view_search" model="ir.ui.view">
-      <field name="name">employee_kpi.view.search</field>
+      <field name="name">employee.kpi.view.search</field>
       <field name="model">employee_kpi.employee_kpi</field>
       <field name="arch" type="xml">
         <search string="Employee KPI">
@@ -91,10 +140,7 @@
       </field>
     </record>
 
-    
-
     <menuitem id="employee_kpi_heading_menu" name="Employee KPI" parent="employee_kpi_root_menu" sequence="1"/>
-
     <menuitem id="employee_kpi_action_menu" name="Employee KPI" action="employee_kpi_action" parent="employee_kpi_heading_menu" sequence="1"/>
   </data>
 </odoo>

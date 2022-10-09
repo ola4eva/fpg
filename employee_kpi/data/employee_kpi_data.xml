@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="0">
+    
+        <record id="perspective_financial" model="employee_kpi.perspective">
+            <field name="name">FINANCIAL</field>
+        </record>
+
+        <record id="perspective_stakeholders" model="employee_kpi.perspective">
+            <field name="name">STAKEHOLDERS PERSPECTIVE</field>
+        </record>
+
+        <record id="perspective_operations" model="employee_kpi.perspective">
+            <field name="name">OPERATIONS PERSPECTIVE</field>
+        </record>
+
+        <record id="perspective_learning_growth_culture" model="employee_kpi.perspective">
+            <field name="name">LEARNING &amp; GROWTH AND CULTURE</field>
+        </record>
+    
+    </data>
+    
+
+</odoo>
