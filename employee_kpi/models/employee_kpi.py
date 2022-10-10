@@ -86,20 +86,38 @@ class EmployeeKpi(models.Model):
         pass
 
     def _compute_score_financial_perspective(self):
-        sum = 0.0
-        self.score_financial_perspective = sum
+        total = 0.0
+        financial_perspective = self.env.ref("employee_kpi.perspective_financial")
+        financial_perspective_kpis = self.question_ids.sudo().search([(
+            'perspective_id', '=', financial_perspective.id
+        )])
+        total = sum(financial_perspective_kpis.mapped('manager_final_score'))
+        print("$$$$$$$$$$$$$$$$$$$$$$$", total)
+        self.score_financial_perspective = total
 
     def _compute_score_operations_perspective(self):
-        sum = 0.0
-        self.score_operations_perspective = sum
+        operations_perspective = self.env.ref("employee_kpi.perspective_operations")
+        operations_perspective_kpis = self.question_ids.sudo().search([(
+            'perspective_id', '=', operations_perspective.id
+        )])
+        total = sum(operations_perspective_kpis.mapped('manager_final_score'))
+        self.score_operations_perspective = total
 
     def _compute_score_stakeholder_satisfaction_perspective(self):
-        sum = 0.0
-        self.score_stakeholder_satisfaction_perspective = sum
+        stakeholders_perspective = self.env.ref("employee_kpi.perspective_stakeholders")
+        stakeholders_perspective_kpis = self.question_ids.sudo().search([(
+            'perspective_id', '=', stakeholders_perspective.id
+        )])
+        total = sum(stakeholders_perspective_kpis.mapped('manager_final_score'))
+        self.score_stakeholder_satisfaction_perspective = total
 
     def _compute_score_learning_growth_culture_perspective(self):
-        sum = 0.0
-        self.score_learning_growth_culture_perspective = sum
+        growth_perspective = self.env.ref("employee_kpi.perspective_learning_growth_culture")
+        growth_perspective_kpis = self.question_ids.sudo().search([(
+            'perspective_id', '=', growth_perspective.id
+        )])
+        total = sum(growth_perspective_kpis.mapped('manager_final_score'))
+        self.score_learning_growth_culture_perspective = total
 
     def _compute_score_total(self):
         self.score_total = (
@@ -121,12 +139,45 @@ class EmployeeKpiQuestion(models.Model):
     key_area_id = fields.Many2one(
         "employee_kpi.assessment.area", string="Key Result Area"
     )
-    weight = fields.Float("weight")
+    weight = fields.Float("Weight")
+    target = fields.Float('Target')
     self_rating = fields.Float("Self Rating")
     manager_rating = fields.Float("Manager's Rating")
-    self_final_score = fields.Float("Self Final Score")
-    manager_final_score = fields.Float("Manager's Final Score")
+    self_final_score = fields.Float("Self Final Score", compute="_compute_self_final_score")
+    manager_final_score = fields.Float("Manager's Final Score", compute="_compute_manager_final_score")
     self_comment = fields.Char("Self Comment")
     manager_comment = fields.Char("Manager's Comment")
     kpi_id = fields.Many2one("employee_kpi.employee_kpi", string="KPI")
     is_section = fields.Boolean("Is Section")
+    
+    def _compute_self_final_score(self):
+        for record in self:
+            try:
+                record.self_final_score = (record.self_rating * record.weight) / record.target
+            except ZeroDivisionError:
+                record.self_final_score = 0
+            
+    def _compute_manager_final_score(self):
+        for record in self:
+            try:
+                record.manager_final_score = (record.manager_rating * record.weight) / record.target
+            except ZeroDivisionError:
+                record.manager_final_score = 0
+                
+    @api.constrains('target')
+    def _constrains_target(self):
+        for record in self:
+            if record.target > 100:
+                raise ValueError("Target cannot exceed 100%")
+            
+    @api.constrains('self_rating')
+    def _constrains_self_rating(self):
+        for record in self:
+            if record.self_rating > 100:
+                raise ValueError("Self rating cannot exceed 100%")
+            
+    @api.constrains('manager_rating')
+    def _constrains_manager_rating(self):
+        for record in self:
+            if record.self_rating > 100:
+                raise ValueError("Manager rating cannot exceed 100%")

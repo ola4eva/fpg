@@ -65,16 +65,17 @@
               <page name="performance_measurement" string="Performance Measurement">
                 <field name="question_ids" nolabel="1" context="{'default_kpi_id': active_id}">
                   <tree decoration-bf="is_section" editable="bottom">
+                    <field name="key_area_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
                     <field name="name" />
                     <field name="weight" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
-                    <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
-                    <field name="key_area_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
-                    <field name="self_rating" />
-                    <field name="manager_rating" />
-                    <field name="self_final_score" />
-                    <field name="manager_final_score" />
-                    <field name="self_comment" />
-                    <field name="manager_comment" />
+                    <field name="target" placeholder="90" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="self_rating" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="manager_rating" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="self_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="manager_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="self_comment" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                    <field name="manager_comment" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
                     <field name="is_section" invisible="1"/>
                     <field name="kpi_id" invisible="1"/>
                     <control>
