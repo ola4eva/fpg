@@ -23,6 +23,7 @@
         'security/access_groups.xml',
         'security/ir.model.access.csv',
         'data/employee_kpi_data.xml',
+        'data/email_data.xml',
         'views/employee_kpi_template_views.xml',
         'views/employee_kpi_perspective_views.xml',
         'views/employee_kpi_views.xml',
