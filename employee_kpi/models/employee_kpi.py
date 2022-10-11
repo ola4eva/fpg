@@ -150,7 +150,6 @@ class EmployeeKpi(models.Model):
                         "is_section": question.is_section,
                     }
                 )
-                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", kpi_question)
                 self.question_ids += kpi_question
 
     def action_send_to_employee(self):

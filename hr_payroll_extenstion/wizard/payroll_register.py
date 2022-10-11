@@ -79,7 +79,6 @@ class payroll_reg(models.TransientModel):
             for r in self.env["hr.salary.rule"].browse(rule_ids):
                 rule_name.append(r.name)
                 rules.append(r.id)
-        print("&&&&&&&&&&&&", rules)
         self.rules = rules
         self.rules_data = rule_name
         return [rule_name]
