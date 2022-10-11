@@ -81,6 +81,7 @@
                     <field name="manager_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
                     <field name="self_comment" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
                     <field name="manager_comment" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
+                    <field name="state" invisible="1"/>
                     <field name="is_section" invisible="1"/>
                     <field name="kpi_id" invisible="1"/>
                     <control>

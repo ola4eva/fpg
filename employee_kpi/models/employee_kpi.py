@@ -148,6 +148,7 @@ class EmployeeKpi(models.Model):
                         "weight": question.weight,
                         "target": question.target,
                         "is_section": question.is_section,
+                        "state": self.state,
                     }
                 )
                 self.question_ids += kpi_question
@@ -245,16 +246,14 @@ class EmployeeKpiQuestion(models.Model):
     self_rating = fields.Float("Self Rating", readonly=True, states={'sent': [('readonly', False)]})
     manager_rating = fields.Float("Manager's Rating", readonly=True, states={'manager': [('readonly', False)]})
     self_final_score = fields.Float(
-        "Self Final Score", compute="_compute_self_final_score", readonly=True, states={'sent': [('readonly', False)]}
-    )
+        "Self Final Score", compute="_compute_self_final_score")
     manager_final_score = fields.Float(
-        "Manager's Final Score", compute="_compute_manager_final_score", readonly=True, states={'manager': [('readonly', False)]}
-    )
+        "Manager's Final Score", compute="_compute_manager_final_score")
     self_comment = fields.Char("Self Comment", readonly=True, states={'sent': [('readonly', False)]})
     manager_comment = fields.Char("Manager's Comment", readonly=True, states={'manager': [('readonly', False)]})
     kpi_id = fields.Many2one("employee_kpi.employee_kpi", string="KPI")
     is_section = fields.Boolean("Is Section")
-    state = fields.Selection(string='State', related="kpi_id.state")
+    state = fields.Selection(related="kpi_id.state")
     
     def _compute_self_final_score(self):
         for record in self:
