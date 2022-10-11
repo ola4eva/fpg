@@ -33,7 +33,6 @@
                 <div style="margin: 0px; padding: 0px;">
                     <p>Hello <t t-out="object.employee_id.parent_id.name" />,</p>
                     <p><t t-out="object.name"/>, has been sent to you for assessment of <t t-out="object.employee_id.name" /></p>
-                    <p>Please fill it and forward to your manager for his own assessment</p>
                     <p>Here is a <a t-attf-href="{{object.url}}" target="_blank">link</a> to the record.</p>
                     <p>Best Regards,</p>
                     <p><t t-out="object.employee_id.name" /></p>
