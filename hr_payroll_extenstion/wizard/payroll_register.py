@@ -7,7 +7,8 @@ from odoo import api, fields, models
 
 
 class report_payrollregister(models.AbstractModel):
-    _name = "report.topline_hr_payroll.report_payrollregister"
+    _name = "report.hr_payroll_extension.report_payrollregister"
+    _description = "Payroll Register Report"
 
     @api.model
     def render_html(self, docids, data=None):
@@ -17,7 +18,7 @@ class report_payrollregister(models.AbstractModel):
             "data": data,
         }
         return self.env["report"].render(
-            "topline_hr_payroll.report_payrollregister", docargs
+            "hr_payroll_extension.report_payrollregister", docargs
         )
 
     @api.model
@@ -272,7 +273,7 @@ class payroll_reg(models.TransientModel):
                 "target": "self",
             }
         return self.env.ref(
-            "topline_hr_payroll.action_report_payroll_register"
+            "hr_payroll_extension.action_report_payroll_register"
         ).report_action(self, data=datas, config=False)
 
     def render_header(self, ws, fields, first_row=0):

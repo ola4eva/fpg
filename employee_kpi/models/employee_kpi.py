@@ -3,7 +3,12 @@
 from urllib.parse import urlencode, urljoin
 from odoo import models, fields, api
 
-
+SELECTION_KPI = [
+            ("draft", "New"),
+            ("sent", "Sent To Employee"),
+            ("manager", "Manager To Assess"),
+            ("done", "Manager Assessed"),
+        ]
 class EmployeeKpi(models.Model):
     _name = "employee_kpi.employee_kpi"
     _inherit = ["mail.activity.mixin", "mail.thread"]
@@ -89,12 +94,7 @@ class EmployeeKpi(models.Model):
     )
     score_total = fields.Float(string="Total", compute="_compute_score_total")
     state = fields.Selection(
-        [
-            ("draft", "New"),
-            ("sent", "Sent To Employee"),
-            ("manager", "Manager To Assess"),
-            ("done", "Manager Assessed"),
-        ],
+        SELECTION_KPI,
         string="State",
         default="draft",
         tracking=True,
@@ -254,9 +254,7 @@ class EmployeeKpiQuestion(models.Model):
     manager_comment = fields.Char("Manager's Comment", readonly=True, states={'manager': [('readonly', False)]})
     kpi_id = fields.Many2one("employee_kpi.employee_kpi", string="KPI")
     is_section = fields.Boolean("Is Section")
-    state = fields.Selection([
-        ('key', 'value')
-    ], string='State', related="kpi_id.state")
+    state = fields.Selection(string='State', related="kpi_id.state")
     
     def _compute_self_final_score(self):
         for record in self:

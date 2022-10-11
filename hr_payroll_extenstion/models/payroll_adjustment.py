@@ -73,7 +73,7 @@ class PayrollAdjustment(models.Model):
         string="State",
         readonly=True,
         default="new",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     period_total = fields.Integer(
