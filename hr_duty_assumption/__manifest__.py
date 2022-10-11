@@ -23,4 +23,5 @@
         'data/email_data.xml',
         'views/duty_assumption_views.xml',
     ],
+    'license': 'LGPL-3',
 }

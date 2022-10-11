@@ -34,17 +34,14 @@ class EmployeeKpiQuestion(models.Model):
     _name = "employee_kpi.kpi.template.question"
     _description = "Employee KPI Template Question"
 
-    name = fields.Char(string="Key Performance Indicators", required=True, optional="show")
-    weight = fields.Float("Weight", optional="show")
-    # perspective = fields.Char("Perspective", optional="show")
+    name = fields.Char(string="Key Performance Indicators", required=True)
+    weight = fields.Float("Weight")
     perspective_id = fields.Many2one(
-        comodel_name="employee_kpi.perspective", string="Perspective", optional="show"
-    )
-    is_section = fields.Boolean(string="Is Section", optional="show")
-    target = fields.Float('Target', optional="show")
+        comodel_name="employee_kpi.perspective", string="Perspective")
+    is_section = fields.Boolean(string="Is Section")
+    target = fields.Float('Target')
     key_area_id = fields.Many2one(
-        "employee_kpi.assessment.area", string="Key Result Area", optional="show"
-    )
+        "employee_kpi.assessment.area", string="Key Result Area")
     template_id = fields.Many2one("employee_kpi.kpi.template", string="Template", required=True)
     
     @api.constrains('weight')

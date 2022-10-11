@@ -43,11 +43,11 @@
                             <page name="key_performance_indicators" string="Key Performance Indicators">
                                 <field name="question_ids" context="{'default_template_id': active_id}">
                                     <tree decoration-bf="is_section" editable="bottom">
-                                        <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
-                                        <field name="key_area_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
-                                        <field name="name" />
-                                        <field name="weight" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
-                                        <field name="target" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}"/>
+                                        <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
+                                        <field name="key_area_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
+                                        <field name="name"  optional="show"/>
+                                        <field name="weight" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show"/>
+                                        <field name="target" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
                                         <field name="is_section" invisible="1"/>
                                         <field name="template_id" invisible="1"/>
                                         <control>

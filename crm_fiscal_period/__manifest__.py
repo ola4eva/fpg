@@ -24,4 +24,5 @@
         'views/crm_lead_views.xml',
         'views/crm_stage_views.xml',
     ],
+    'license': 'LGPL-3',
 }

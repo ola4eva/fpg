@@ -28,4 +28,5 @@
         'views/employee_kpi_perspective_views.xml',
         'views/employee_kpi_views.xml',
     ],
+    'license': 'LGPL-3',
 }

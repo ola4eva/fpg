@@ -22,4 +22,5 @@
         'views/payroll_adjustment_views.xml',
         'wizard/payroll_register_view.xml',
     ],
+    'license': 'LGPL-3',
 }

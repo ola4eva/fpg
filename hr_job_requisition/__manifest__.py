@@ -24,4 +24,5 @@
         'data/ir_sequence.xml',
         'views/job_requisition_views.xml',
     ],
+    'license': 'LGPL-3',
 }

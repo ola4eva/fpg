@@ -52,7 +52,7 @@ class EmployeeKpi(models.Model):
         states={"draft": [("readonly", False)]},
     )
     user_id = fields.Many2one(
-        "res.users", string="Created by", default=_get_default_user_id
+        "res.users", string="Responsible", default=_get_default_user_id
     )
     grade_level = fields.Char(
         "GRADE LEVEL",
@@ -233,28 +233,31 @@ class EmployeeKpiQuestion(models.Model):
     _name = "employee_kpi.question"
     _description = "Employee KPI Question"
 
-    name = fields.Char(string="Key Performance Indicators")
+    name = fields.Char(string="Key Performance Indicators", readonly=True, states={'draft': [('readonly', False)]})
     perspective_id = fields.Many2one(
-        comodel_name="employee_kpi.perspective", string="Perspective"
+        comodel_name="employee_kpi.perspective", string="Perspective", readonly=True, states={'draft': [('readonly', False)]}
     )
     key_area_id = fields.Many2one(
-        "employee_kpi.assessment.area", string="Key Result Area"
+        "employee_kpi.assessment.area", string="Key Result Area", readonly=True, states={'draft': [('readonly', False)]}
     )
-    weight = fields.Float("Weight")
-    target = fields.Float("Target")
-    self_rating = fields.Float("Self Rating")
-    manager_rating = fields.Float("Manager's Rating")
+    weight = fields.Float("Weight", readonly=True, states={'draft': [('readonly', False)]})
+    target = fields.Float("Target", readonly=True, states={'draft': [('readonly', False)]})
+    self_rating = fields.Float("Self Rating", readonly=True, states={'sent': [('readonly', False)]})
+    manager_rating = fields.Float("Manager's Rating", readonly=True, states={'manager': [('readonly', False)]})
     self_final_score = fields.Float(
-        "Self Final Score", compute="_compute_self_final_score"
+        "Self Final Score", compute="_compute_self_final_score", readonly=True, states={'sent': [('readonly', False)]}
     )
     manager_final_score = fields.Float(
-        "Manager's Final Score", compute="_compute_manager_final_score"
+        "Manager's Final Score", compute="_compute_manager_final_score", readonly=True, states={'manager': [('readonly', False)]}
     )
-    self_comment = fields.Char("Self Comment")
-    manager_comment = fields.Char("Manager's Comment")
+    self_comment = fields.Char("Self Comment", readonly=True, states={'sent': [('readonly', False)]})
+    manager_comment = fields.Char("Manager's Comment", readonly=True, states={'manager': [('readonly', False)]})
     kpi_id = fields.Many2one("employee_kpi.employee_kpi", string="KPI")
     is_section = fields.Boolean("Is Section")
-
+    state = fields.Selection([
+        ('key', 'value')
+    ], string='State', related="kpi_id.state")
+    
     def _compute_self_final_score(self):
         for record in self:
             try:
