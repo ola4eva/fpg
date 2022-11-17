@@ -15,7 +15,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['base', 'account'],
+    'depends': ['base', 'sale_management', 'account'],
 
     'data': [
         'views/res_partner_views.xml',
