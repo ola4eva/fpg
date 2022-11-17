@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+
+    <record id="view_employee_form_inherit_medical_info" model="ir.ui.view">
+      <field name="name">hr.employee.view.form.inherit.medical_info</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//notebook" position="inside">
+          <page name="medical_info" string="Medical Information">
+            <group string="1. Do you have any of the following conditions?" col="4">
+              <field name="sickle_cell_disease" widget="radio" options="{'horizontal': true}" />
+              <field name="asthma" widget="radio" options="{'horizontal': true}" />
+              <field name="hypertension" widget="radio" options="{'horizontal': true}" />
+              <field name="diabetes_mellitus" widget="radio" options="{'horizontal': true}" />
+              <field name="peptic_ulcer_disease" widget="radio" options="{'horizontal': true}" />
+              <field name="heart_disease" widget="radio" options="{'horizontal': true}" />
+              <field name="tuberculosis" widget="radio" options="{'horizontal': true}" />
+              <field name="epilepsy_seizure_disorder" widget="radio" options="{'horizontal': true}" />
+              <field name="mental_illness" widget="radio" options="{'horizontal': true}" />
+              <field name="kidney_disease" widget="radio" options="{'horizontal': true}" />
+              <field name="liver_disease" widget="radio" options="{'horizontal': true}" />
+              <field name="allergies" widget="radio" options="{'horizontal': true}" />
+              <field name="drug_addiction" widget="radio" options="{'horizontal': true}" />
+              <field name="are_you_pregnant" widget="radio" options="{'horizontal': true}" />
+            </group>
+            <group>
+              <field name="condition_details" />
+            </group>
+
+            <group string="2. Any history of surgical operation/ procedure?" col="2">
+              <field name="history_surgical_operation" widget="radio" options="{'horizontal': true}" />
+            </group>
+            <group col="2">
+              <field name="history_surgical_operation_details" />
+            </group>
+
+            <group string="3. Are you presently on medication?" col="2">
+              <field name="presently_on_medication" widget="radio" options="{'horizontal': true}" />
+            </group>
+            <group col="2">
+              <field name="presently_on_medication_details" />
+            </group>
+
+            <group string="4. Where you admitted in any health facility recently (one month prior to employment)?" col="2">
+              <field name="admitted_health_facility_recently" widget="radio" options="{'horizontal': true}" />
+            </group>
+            <group col="2">
+              <field name="admitted_health_facility_recently_details" />
+            </group>
+
+            <group string="5. In case of any medical emergency, give the details of the person(s) to be contacted:" col="2">
+              <field name="medical_emergency_contact" string="Name" />
+              <field name="medical_emergency_address" string="Address" />
+              <field name="medical_emergency_telephone" string="Telephone" widget="phone" />
+              <field name="medical_emergency_email" string="E-mail" widget="email" />
+            </group>
+
+            <span>
+              <strong>
+                I
+                <span t-esc="name" />
+                hereby attest that all information provided here is
+                accurate and true knowing fully well that a misrepresentation of any information would lead
+                to breach of my contract and termination of same.
+              </strong>
+            </span>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="hr_employee_view_form_inherit_medical_info" model="ir.ui.view">
+      <field name="name">hr.employee.view.form.inherit.medical_info</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.hr_employee_public_view_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//sheet" position="before">
+          <header>
+            <field name="submitted" invisible="1" />
+            <button name="action_submit" string="Submit" type="object" class="oe_highlight" attrs="{'invisible': [('submitted', '=', True)]}" />
+          </header>
+        </xpath>
+        <field name="name" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="job_title" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="mobile_phone" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="work_phone" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="department_id" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="work_email" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="parent_id" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="coach_id" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="address_id" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="work_location_id" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="resource_calendar_id" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <field name="employee_type" position="attributes">
+          <attribute name="readonly">1</attribute>
+        </field>
+        <xpath expr="//notebook" position="inside">
+          <page name="medical_info" string="Medical Information">
+            <group string="1. Do you have any of the following conditions?" col="4">
+              <field name="sickle_cell_disease" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="asthma" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="hypertension" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="diabetes_mellitus" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="peptic_ulcer_disease" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="heart_disease" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="tuberculosis" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="epilepsy_seizure_disorder" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="mental_illness" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="kidney_disease" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="liver_disease" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="allergies" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="drug_addiction" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="are_you_pregnant" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+            <group>
+              <field name="condition_details" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+
+            <group string="2. Any history of surgical operation/ procedure?" col="2">
+              <field name="history_surgical_operation" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+            <group col="2">
+              <field name="history_surgical_operation_details" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+
+            <group string="3. Are you presently on medication?" col="2">
+              <field name="presently_on_medication" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+            <group col="2">
+              <field name="presently_on_medication_details" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+
+            <group string="4. Where you admitted in any health facility recently (one month prior to employment)?" col="2">
+              <field name="admitted_health_facility_recently" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+            <group col="2">
+              <field name="admitted_health_facility_recently_details" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+
+            <group string="5. In case of any medical emergency, give the details of the person(s) to be contacted:" col="2">
+              <field name="medical_emergency_contact" string="Name" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="medical_emergency_address" string="Address" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="medical_emergency_telephone" string="Telephone" widget="phone" attrs="{'readonly': [('submitted', '=', True)]}" />
+              <field name="medical_emergency_email" string="E-mail" widget="email" attrs="{'readonly': [('submitted', '=', True)]}" />
+            </group>
+
+            <span>
+              <strong>
+                I
+                <span t-esc="name" />
+                hereby attest that all information provided here is
+                            accurate and true knowing fully well that a misrepresentation of any information would lead
+                            to breach of my contract and termination of same.
+              </strong>
+            </span>
+
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_my_employee_profile" model="ir.actions.act_window">
+      <field name="name">My Profile</field>
+      <field name="res_model">hr.employee</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="domain">[('user_id','=',uid)]</field>
+      <field name="context">{}</field>
+      <field name="view_id" eval="False" />
+      <field name="search_view_id" ref="hr.view_employee_filter" />
+      <field name="help" type="html">
+        <p>
+                With just a quick glance on the Odoo employee screen, you
+                can easily find all the information you need concerning yourself;
+                contact data, job position, availability, etc.
+              </p>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="view_my_employee_profile_kanban">
+      <field name="sequence" eval="1" />
+      <field name="view_mode">kanban</field>
+      <field name="view_id" ref="hr.hr_employee_public_view_kanban" />
+      <field name="act_window_id" ref="view_my_employee_profile" />
+    </record>
+
+    <record model="ir.actions.act_window.view" id="view_my_employee_profile_tree">
+      <field name="sequence" eval="2" />
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="hr.hr_employee_public_view_tree" />
+      <field name="act_window_id" ref="view_my_employee_profile" />
+    </record>
+
+    <record model="ir.actions.act_window.view" id="view_my_employee_profile_form">
+      <field name="sequence" eval="3" />
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="hr_employee_view_form_inherit_medical_info" />
+      <field name="act_window_id" ref="view_my_employee_profile" />
+    </record>
+
+    <menuitem
+      name="My Profile"
+      id="employee_my_profile_menu"
+      parent="hr.menu_hr_root"
+      action="view_my_employee_profile"
+      sequence="5"
+      groups="base.group_user" />
+
+  </data>
+</odoo>
