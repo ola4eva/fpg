@@ -4,11 +4,13 @@ from urllib.parse import urlencode, urljoin
 from odoo import models, fields, api
 
 SELECTION_KPI = [
-            ("draft", "New"),
-            ("sent", "Sent To Employee"),
-            ("manager", "Manager To Assess"),
-            ("done", "Manager Assessed"),
-        ]
+    ("draft", "New"),
+    ("sent", "Sent To Employee"),
+    ("manager", "Manager To Assess"),
+    ("done", "Manager Assessed"),
+]
+
+
 class EmployeeKpi(models.Model):
     _name = "employee_kpi.employee_kpi"
     _inherit = ["mail.activity.mixin", "mail.thread"]
@@ -110,7 +112,8 @@ class EmployeeKpi(models.Model):
     )
     exceptional_achievements = fields.Text("Exceptional Achievement(s)")
     areas_of_strength = fields.Text("Area of Strengths")
-    job_improvement_recommendations = fields.Text("Job Improvement Recommendation(s)")
+    job_improvement_recommendations = fields.Text(
+        "Job Improvement Recommendation(s)")
     appraiser_overall_comment = fields.Text("Appraiser's Overall Comment")
     appraisee_overall_comment = fields.Text("Appraisee's Overall Comment")
     fpg_final_recommendation = fields.Text("FPG's Final Recommendation")
@@ -142,7 +145,7 @@ class EmployeeKpi(models.Model):
             for question in self.template_id.question_ids:
                 kpi_question = Question.create(
                     {
-                        "key_area_id": question.key_area_id.id,
+                        "key_area": question.key_area,
                         "perspective_id": question.perspective_id.id,
                         "name": question.name,
                         "weight": question.weight,
@@ -155,7 +158,8 @@ class EmployeeKpi(models.Model):
 
     def action_send_to_employee(self):
         # send an email to employee
-        template = self.env.ref("employee_kpi.employee_kpi_request_email_to_employee")
+        template = self.env.ref(
+            "employee_kpi.employee_kpi_request_email_to_employee")
         template.send_mail(self.id, force_send=True)
         self.state = "sent"
 
@@ -169,7 +173,8 @@ class EmployeeKpi(models.Model):
 
     def action_complete_assessment(self):
         # send notification to hr manager
-        template = self.env.ref("employee_kpi.employee_kpi_completion_email_to_hr")
+        template = self.env.ref(
+            "employee_kpi.employee_kpi_completion_email_to_hr")
         template.send_mail(self.id, force_send=True)
         self.state = "done"
 
@@ -188,7 +193,8 @@ class EmployeeKpi(models.Model):
 
     def _compute_score_financial_perspective(self):
         total = 0.0
-        financial_perspective = self.env.ref("employee_kpi.perspective_financial")
+        financial_perspective = self.env.ref(
+            "employee_kpi.perspective_financial")
         financial_perspective_kpis = self.question_ids.sudo().search(
             [("perspective_id", "=", financial_perspective.id)]
         )
@@ -196,7 +202,8 @@ class EmployeeKpi(models.Model):
         self.score_financial_perspective = total
 
     def _compute_score_operations_perspective(self):
-        operations_perspective = self.env.ref("employee_kpi.perspective_operations")
+        operations_perspective = self.env.ref(
+            "employee_kpi.perspective_operations")
         operations_perspective_kpis = self.question_ids.sudo().search(
             [("perspective_id", "=", operations_perspective.id)]
         )
@@ -204,11 +211,13 @@ class EmployeeKpi(models.Model):
         self.score_operations_perspective = total
 
     def _compute_score_stakeholder_satisfaction_perspective(self):
-        stakeholders_perspective = self.env.ref("employee_kpi.perspective_stakeholders")
+        stakeholders_perspective = self.env.ref(
+            "employee_kpi.perspective_stakeholders")
         stakeholders_perspective_kpis = self.question_ids.sudo().search(
             [("perspective_id", "=", stakeholders_perspective.id)]
         )
-        total = sum(stakeholders_perspective_kpis.mapped("manager_final_score"))
+        total = sum(stakeholders_perspective_kpis.mapped(
+            "manager_final_score"))
         self.score_stakeholder_satisfaction_perspective = total
 
     def _compute_score_learning_growth_culture_perspective(self):
@@ -234,27 +243,34 @@ class EmployeeKpiQuestion(models.Model):
     _name = "employee_kpi.question"
     _description = "Employee KPI Question"
 
-    name = fields.Char(string="Key Performance Indicators", readonly=True, states={'draft': [('readonly', False)]})
+    name = fields.Char(string="Key Performance Indicators",
+                       readonly=True, states={'draft': [('readonly', False)]})
     perspective_id = fields.Many2one(
         comodel_name="employee_kpi.perspective", string="Perspective", readonly=True, states={'draft': [('readonly', False)]}
     )
-    key_area_id = fields.Many2one(
-        "employee_kpi.assessment.area", string="Key Result Area", readonly=True, states={'draft': [('readonly', False)]}
+    key_area = fields.Char(
+        string="Key Result Area", readonly=True, states={'draft': [('readonly', False)]}
     )
-    weight = fields.Float("Weight", readonly=True, states={'draft': [('readonly', False)]})
-    target = fields.Float("Target", readonly=True, states={'draft': [('readonly', False)]})
-    self_rating = fields.Float("Self Rating", readonly=True, states={'sent': [('readonly', False)]})
-    manager_rating = fields.Float("Manager's Rating", readonly=True, states={'manager': [('readonly', False)]})
+    weight = fields.Float("Weight", readonly=True, states={
+                          'draft': [('readonly', False)]})
+    target = fields.Float("Target", readonly=True, states={
+                          'draft': [('readonly', False)]})
+    self_rating = fields.Float("Self Rating", readonly=True, states={
+                               'sent': [('readonly', False)]})
+    manager_rating = fields.Float("Manager's Rating", readonly=True, states={
+                                  'manager': [('readonly', False)]})
     self_final_score = fields.Float(
         "Self Final Score", compute="_compute_self_final_score")
     manager_final_score = fields.Float(
         "Manager's Final Score", compute="_compute_manager_final_score")
-    self_comment = fields.Char("Self Comment", readonly=True, states={'sent': [('readonly', False)]})
-    manager_comment = fields.Char("Manager's Comment", readonly=True, states={'manager': [('readonly', False)]})
+    self_comment = fields.Char("Self Comment", readonly=True, states={
+                               'sent': [('readonly', False)]})
+    manager_comment = fields.Char("Manager's Comment", readonly=True, states={
+                                  'manager': [('readonly', False)]})
     kpi_id = fields.Many2one("employee_kpi.employee_kpi", string="KPI")
     is_section = fields.Boolean("Is Section")
     state = fields.Selection(related="kpi_id.state")
-    
+
     def _compute_self_final_score(self):
         for record in self:
             try:

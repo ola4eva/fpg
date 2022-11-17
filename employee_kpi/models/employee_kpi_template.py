@@ -6,8 +6,10 @@ class EmployeeKpiTemplate(models.Model):
     _inherit = ['mail.thread', "mail.activity.mixin"]
     _description = "Kpi Template"
 
-    name = fields.Char(string="Name", tracking=True, readonly=True, states={'draft': [('readonly', False)]})
-    user_id = fields.Many2one("res.users", string="User", readonly=True, default=lambda self: self.env.uid)
+    name = fields.Char(string="Name", tracking=True, readonly=True, states={
+                       'draft': [('readonly', False)]})
+    user_id = fields.Many2one(
+        "res.users", string="User", readonly=True, default=lambda self: self.env.uid)
 
     question_ids = fields.One2many(
         "employee_kpi.kpi.template.question", "template_id", string="Questions", readonly=True, states={'draft': [('readonly', False)]}
@@ -40,18 +42,21 @@ class EmployeeKpiQuestion(models.Model):
         comodel_name="employee_kpi.perspective", string="Perspective")
     is_section = fields.Boolean(string="Is Section")
     target = fields.Float('Target')
-    key_area_id = fields.Many2one(
-        "employee_kpi.assessment.area", string="Key Result Area")
-    template_id = fields.Many2one("employee_kpi.kpi.template", string="Template", required=True)
-    
+    key_area = fields.Char(
+        string="Key Result Area")
+    template_id = fields.Many2one(
+        "employee_kpi.kpi.template", string="Template", required=True)
+
     @api.constrains('weight')
     def _constrains_weight(self):
-        if self.weight <= 0:
-            raise ValueError("Weight must be strictly positive")
-        
+        for record in self:
+            if record.weight <= 0:
+                raise ValueError("Weight must be strictly positive")
+
     @api.constrains('target')
     def _constrains_target(self):
-        if self.target <= 0:
-            raise ValueError("Target must be strictly positive")
-        if self.target > 100:
-            raise ValueError("Target cannot be greater than 100%")
+        for record in self:
+            if record.target <= 0:
+                raise ValueError("Target must be strictly positive")
+            if record.target > 100:
+                raise ValueError("Target cannot be greater than 100%")

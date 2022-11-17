@@ -24,7 +24,7 @@
           <header>
             <button name="action_send_to_employee" string="Send to Employee" type="object" class="oe_highlight" states="draft" groups="employee_kpi.group_employee_kpi_administrator" />
             <!-- <button name="action_get_url" type="object" string="Get URL" /> -->
-            <button name="action_send_to_manager" string="Send to Manager" type="object" class="oe_highlight" states="sent" groups="employee_kpi.group_employee_kpi_user"/>
+            <button name="action_send_to_manager" string="Send to Manager" type="object" class="oe_highlight" states="sent" groups="employee_kpi.group_employee_kpi_user" />
             <button name="action_complete_assessment" string="Confirm Assessment" type="object" class="oe_highlight" states="manager" groups="employee_kpi.group_employee_kpi_manager" />
             <field name="state" widget="statusbar" />
           </header>
@@ -39,7 +39,7 @@
                 <field name="employee_id" />
                 <field name="job_id" />
                 <field name="department_id" />
-                <field name="period" placeholder="FY2022/2023..."/>
+                <field name="period" placeholder="FY2022/2023..." />
                 <field name="parent_id" />
                 <field name="grade_level" />
                 <field name="grade_months" />
@@ -56,7 +56,7 @@
                     <p>3 - Meets Expectations- 66-85%</p>
                     <p>4 - Exceeds Expectations- 86-95%</p>
                     <p>5 - Outstanding - 96-100%</p>
-                    <br/>
+                    <br />
                     <h4>Rating (for target)</h4>
                     <p>Low- 25%</p>
                     <p>Average- 50%</p>
@@ -70,22 +70,22 @@
               <page name="performance_measurement" string="Performance Measurement">
                 <field name="question_ids" nolabel="1" context="{'default_kpi_id': active_id}">
                   <tree decoration-bf="is_section" editable="bottom">
-                    <field name="key_area_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show"/>
-                    <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show"/>
+                    <field name="perspective_id" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
+                    <field name="key_area" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
                     <field name="name" optional="show" required="1" />
-                    <field name="weight" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show"/>
-                    <field name="target" placeholder="90" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show"/>
-                    <field name="self_rating" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
-                    <field name="manager_rating" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
-                    <field name="self_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
-                    <field name="manager_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
-                    <field name="self_comment" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
-                    <field name="manager_comment" attrs="{'invisible': [('is_section', '=', True)]}" optional="show"/>
-                    <field name="state" invisible="1"/>
-                    <field name="is_section" invisible="1"/>
-                    <field name="kpi_id" invisible="1"/>
+                    <field name="weight" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
+                    <field name="target" placeholder="90" attrs="{'invisible': [('is_section', '=', True)], 'required': [('is_section', '=', False)]}" optional="show" />
+                    <field name="self_rating" attrs="{'invisible': [('is_section', '=', True)]}" optional="show" />
+                    <field name="manager_rating" attrs="{'invisible': [('is_section', '=', True)]}" optional="show" />
+                    <field name="self_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)]}" optional="show" />
+                    <field name="manager_final_score" sum="Total" attrs="{'invisible': [('is_section', '=', True)]}" optional="show" />
+                    <field name="self_comment" attrs="{'invisible': [('is_section', '=', True)]}" optional="show" />
+                    <field name="manager_comment" attrs="{'invisible': [('is_section', '=', True)]}" optional="show" />
+                    <field name="state" invisible="1" />
+                    <field name="is_section" invisible="1" />
+                    <field name="kpi_id" invisible="1" />
                     <control>
-                      <create name="add_section_control" string="Add a section" context="{'default_is_section': True}"/>
+                      <create name="add_section_control" string="Add a section" context="{'default_is_section': True}" />
                       <create name="add_question_control" string="Add a question" />
                     </control>
                   </tree>
@@ -99,7 +99,7 @@
                     <field name="score_learning_growth_culture_perspective" colspan="4" />
                     <field name="score_total" colspan="4" />
                   </group>
-                  <div class="oe_clear"/>
+                  <div class="oe_clear" />
                 </group>
               </page>
             </notebook>
@@ -147,7 +147,7 @@
       </field>
     </record>
 
-    <menuitem id="employee_kpi_heading_menu" name="Employee KPI" parent="employee_kpi_root_menu" sequence="1"/>
-    <menuitem id="employee_kpi_action_menu" name="Employee KPI" action="employee_kpi_action" parent="employee_kpi_heading_menu" sequence="1"/>
+    <menuitem id="employee_kpi_heading_menu" name="Employee KPI" parent="employee_kpi_root_menu" sequence="1" />
+    <menuitem id="employee_kpi_action_menu" name="Employee KPI" action="employee_kpi_action" parent="employee_kpi_heading_menu" sequence="1" />
   </data>
 </odoo>
