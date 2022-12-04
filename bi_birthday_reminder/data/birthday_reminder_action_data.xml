@@ -28,5 +28,59 @@
             </field>
         </record>
 
+        <!--  Notification for upcoming birthdays -->
+        <record id="email_template_upcoming_birthday_notification" model="mail.template">
+            <field name="name">Upcoming Customer Birthdays</field>
+            <field name="subject">Upcoming Customer Birthdays</field>
+            <field name="email_from">{{user.partner_id.email_formatted}}</field>
+            <field name="email_to">{{'' if not ctx.get('recipients') else ','.join(ctx.get('recipients').mapped('partner_id').mapped('email_formatted'))}}</field>
+            <field name="model_id" ref="bi_birthday_reminder.model_res_partner_notification" />
+            <field name="auto_delete" eval="False" />
+            <field name="body_html" type="html">
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); ">
+                    <p>
+                        <span>
+                            Hello,
+                        </span>
+                    </p>
+                    <p>
+                        The following customers have a birthday in
+                        <t t-out="ctx.get('days_ahead')" />
+                        <t t-if="ctx.get('days_ahead') == 1">
+                            day
+                        </t>
+                        <t t-else="">
+                            days
+                        </t>
+                    </p>
+                    <p>
+                        <table class="table table-striped">
+                            <thead>
+                                <th>Name</th>
+                                <th>Date</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="ctx.get('customers_with_upcoming_birthdays')" t-as="customer">
+                                    <tr>
+                                        <td>
+                                            <t t-out="customer['name']" />
+                                        </td>
+                                        <td>
+                                            <t t-out="customer['birthdate']" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </p>
+                    <br />
+                    Best Wishes,
+                    <p>
+                        <t t-out="user.company_id.name or ''" />
+                    </p>
+                </div>
+            </field>
+        </record>
+
     </data>
 </odoo>
