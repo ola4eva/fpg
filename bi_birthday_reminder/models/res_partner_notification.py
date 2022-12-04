@@ -20,8 +20,9 @@ class PartnerNotification(models.TransientModel):
 
     @api.model
     def _cron_upcoming_birthday_notification(self):
-        recipient = {}
-        recipient['name'] = "Alabi Adebayo"
+        group_hr_manager = self.env.ref("hr.group_hr_manager")
+        group_md = self.env.ref("fpg_base.fpg_base_group_md")
+        recipients = group_hr_manager.users | group_md.users
         customers = self.env['res.partner'].sudo().search(
             [('birthdate', '!=', False)])
         email_template = self.env.ref(
@@ -41,7 +42,7 @@ class PartnerNotification(models.TransientModel):
                 continue
             rec = self.create({})
             ctx.update(
-                recipient=recipient,
+                recipients=recipients,
                 days_ahead=notification_schedule,
                 customers_with_upcoming_birthdays=filtered_customers
             )
@@ -53,7 +54,6 @@ class BirthdayNotificationConfig(models.Model):
     _name = 'res.partner.notification.config'
     _description = 'Partner Advance Notification Configuration'
 
-    # name = fields.Char(string='Name')
     period = fields.Integer(string="")
     period_unit = fields.Selection(selection=[
         ('days', "Days"),
