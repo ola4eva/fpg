@@ -53,6 +53,10 @@ class PartnerNotification(models.TransientModel):
 class BirthdayNotificationConfig(models.Model):
     _name = 'res.partner.notification.config'
     _description = 'Partner Advance Notification Configuration'
+    _sql_constraints = [
+        ("period_period_unit_check", "check(period,period_unit)",
+         "Combination of Period and Unit has to be unique!"),
+    ]
 
     period = fields.Integer(string="")
     period_unit = fields.Selection(selection=[
