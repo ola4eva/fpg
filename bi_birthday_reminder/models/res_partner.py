@@ -2,10 +2,8 @@
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing
 # details.
 
-from datetime import datetime, timedelta
-from odoo import SUPERUSER_ID
+from datetime import datetime
 from odoo import api, fields, models, _
-from odoo.http import request
 
 
 class res_partner(models.Model):
@@ -32,4 +30,5 @@ class res_partner(models.Model):
         partners = partners.filtered(
             lambda partner: partner.birthdate.month == today.month and partner.birthdate.day == today.day)
         return partners.send_birthday_reminder()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

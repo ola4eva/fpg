@@ -4,7 +4,7 @@
     'name': "Send Customer Birthday Wishes",
     'version': "15.0.0.0",
     'category': "Extra Tools",
-    'license': 'OPL-1',
+    "license": 'LGPL-3',
     'summary': 'Send Birthday Greetings Email to Partner/Customer',
     'description': '''
              Module to send an Email to customer on Birthday.
@@ -14,8 +14,10 @@
     'website': 'https://www.browseinfo.in',
     'depends': ['sale'],
     'data': [
+        'security/ir.model.access.csv',
         'views/res_partner_view.xml',
         'views/birthday_reminder_cron.xml',
+        'views/res_partner_notification_views.xml',
         'data/birthday_reminder_action_data.xml'
     ],
     'installable': True,
