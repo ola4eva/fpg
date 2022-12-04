@@ -12,7 +12,10 @@
     ''',
     "author": "BrowseInfo",
     'website': 'https://www.browseinfo.in',
-    'depends': ['sale'],
+    'depends': [
+        'sale',
+        'fpg_base',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/res_partner_view.xml',
