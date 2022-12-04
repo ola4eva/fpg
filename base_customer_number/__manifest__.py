@@ -8,9 +8,9 @@
     'description': """
         Long description of module's purpose
     """,
-
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    "license": 'LGPL-3',
+    'author': "Olalekan Babawale",
+    'website': "http://obabawale.github.io",
 
     'category': 'Uncategorized',
     'version': '0.1',
