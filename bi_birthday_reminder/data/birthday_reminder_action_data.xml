@@ -66,7 +66,7 @@
                                             <t t-out="customer['name']" />
                                         </td>
                                         <td>
-                                            <t t-out="customer['birthdate']" />
+                                            <t t-out="(customer['birthdate']).strftime('%d %B')" />
                                         </td>
                                     </tr>
                                 </t>
