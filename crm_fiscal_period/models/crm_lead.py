@@ -129,3 +129,9 @@ class CrmLead(models.Model):
                 },
             )
         return res
+
+    @api.onchange('stage_id')
+    def _onchange_stage_id(self):
+        if self.stage_id:
+            self.stage_id._notify_users(self.stage_id.mail_template_id, {
+                                        'recipients': self.stage_id.user_notification_ids})
