@@ -42,12 +42,14 @@ class CrmLead(models.Model):
         )
         if dt_now < this_year_end_date:
             last_fiscal_year_end_date = datetime.combine(
-                crm_year_last_date + relativedelta(years=-1), datetime.min.time()
+                crm_year_last_date +
+                relativedelta(years=-1), datetime.min.time()
             )
         domain_expired = [("create_date", "<=", last_fiscal_year_end_date)]
         leads_to_close = self.search(domain_expired)
         for lead in leads_to_close:
-            won_stages = self._stage_find(domain=[("is_won", "=", True)], limit=None)
+            won_stages = self._stage_find(
+                domain=[("is_won", "=", True)], limit=None)
             close_stages = self._stage_find(
                 domain=[("is_close", "=", True)], limit=None
             )
@@ -94,7 +96,8 @@ class CrmLead(models.Model):
         for lead in self:
             limit = 1
             Stage = self.env["crm.stage"].sudo()
-            domain = [("is_close", "=", True), ("team_id", "=", lead.team_id.id)]
+            domain = [("is_close", "=", True),
+                      ("team_id", "=", lead.team_id.id)]
             close_stage = Stage.search(domain, limit=limit)
             if not close_stage:
                 domain = [("is_close", "=", True)]

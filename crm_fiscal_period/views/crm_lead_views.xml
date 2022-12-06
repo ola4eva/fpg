@@ -5,13 +5,24 @@
     <record id="crm_lead_view_form_inherit" model="ir.ui.view">
       <field name="name">crm.lead.view.form.inherit</field>
       <field name="model">crm.lead</field>
-      <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+      <field name="inherit_id" ref="crm.crm_lead_view_form" />
       <field name="arch" type="xml">
         <xpath expr="//field[@name='user_id']" position="after">
           <field name="notification_user_ids" widget="many2many_tags" />
         </xpath>
       </field>
     </record>
-  
+
+    <record id="quick_create_opportunity_form" model="ir.ui.view">
+      <field name="name">crm.lead.view.form.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.quick_create_opportunity_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='phone']" position="after">
+          <field name="date_deadline" required="1" />
+        </xpath>
+      </field>
+    </record>
+
   </data>
 </odoo>
