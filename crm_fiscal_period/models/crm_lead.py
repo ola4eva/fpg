@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 from odoo import models, api, fields, Command, _
-from odoo.exceptions import UserError
+from odoo.exceptions import MissingError
 
 
 class CrmLead(models.Model):
@@ -113,25 +113,34 @@ class CrmLead(models.Model):
     # ---------------------------------------------------
     # Mail gateway
     # ---------------------------------------------------
+    # remove because it was causing an error when `Won` button is clicked
+    # def _track_template(self, changes):
+    #     res = super(CrmLead, self)._track_template(changes)
+    #     crm_lead = self[0]
+    #     try:
+    #         if "stage_id" in changes and crm_lead.stage_id.mail_template_id:
+    #             stage_id = (
+    #                 crm_lead.stage_id.mail_template_id,
+    #                 {
+    #                     "auto_delete_message": True,
+    #                     "subtype_id": self.env["ir.model.data"]._xmlid_to_res_id(
+    #                         "mail.mt_note"
+    #                     ),
+    #                     "email_layout_xmlid": "mail.mail_notification_light",
+    #                 },
+    #             )
 
-    def _track_template(self, changes):
-        res = super(CrmLead, self)._track_template(changes)
-        crm_lead = self[0]
-        if "stage_id" in changes and crm_lead.stage_id.mail_template_id:
-            res["stage_id"] = (
-                crm_lead.stage_id.mail_template_id,
-                {
-                    "auto_delete_message": True,
-                    "subtype_id": self.env["ir.model.data"]._xmlid_to_res_id(
-                        "mail.mt_note"
-                    ),
-                    "email_layout_xmlid": "mail.mail_notification_light",
-                },
-            )
-        return res
+    #             res["stage_id"] = stage_id
+    #     except MissingError:
+    #         pass
+    #     finally:
+    #         return res
 
     @api.onchange('stage_id')
     def _onchange_stage_id(self):
         if self.stage_id:
-            self.stage_id._notify_users(self.stage_id.mail_template_id, {
-                                        'recipients': self.stage_id.user_notification_ids})
+            try:
+                self.stage_id._notify_users(self.stage_id.mail_template_id, {
+                    'recipients': self.stage_id.user_notification_ids})
+            except MissingError:
+                pass

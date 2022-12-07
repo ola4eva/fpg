@@ -25,6 +25,8 @@ class CrmStage(models.Model):
         for stage in self:
             if not template_id:
                 template_id = stage.mail_template_id
+            if not template_id:
+                continue
             recipients = context.get(
                 'recipients') or stage.user_notification_ids
             for recipient in recipients:
