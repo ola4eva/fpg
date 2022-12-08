@@ -35,7 +35,6 @@
                 <div style="margin: 0px; padding: 0px;">
                     <p>Hello,</p>
                     <p>
-                        <!-- <t t-out="object.name" /> -->
                         Pipline has been updated to
                         <t t-out="object.name" />
                         stage.

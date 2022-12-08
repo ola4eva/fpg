@@ -7,9 +7,9 @@ from odoo.exceptions import MissingError
 class CrmLead(models.Model):
     _inherit = "crm.lead"
 
-    notification_user_ids = fields.Many2many(
-        comodel_name="res.users", string="Notified Users"
-    )
+    # notification_user_ids = fields.Many2many(
+    #     comodel_name="res.users", string="Notified Users"
+    # )
 
     @api.model
     def cron_close_leads(self):
