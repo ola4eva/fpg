@@ -29,9 +29,14 @@ class CrmStage(models.Model):
                 continue
             recipients = context.get(
                 'recipients') or stage.user_notification_ids
+            pipeline = context.get(
+                'pipeline')
             for recipient in recipients:
                 if template_id:
                     ctx = dict(self._context)
-                    ctx.update(recipient=recipient)
+                    ctx.update(
+                        recipient=recipient,
+                        pipeline=pipeline
+                    )
                     template_id.with_context(ctx).send_mail(
                         stage.id, force_send=True)

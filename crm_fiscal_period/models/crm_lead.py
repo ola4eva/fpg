@@ -110,37 +110,24 @@ class CrmLead(models.Model):
             lead.write({"stage_id": close_stage.id, "active": False})
         return True
 
-    # ---------------------------------------------------
-    # Mail gateway
-    # ---------------------------------------------------
-    # remove because it was causing an error when `Won` button is clicked
-    # def _track_template(self, changes):
-    #     res = super(CrmLead, self)._track_template(changes)
-    #     crm_lead = self[0]
-    #     try:
-    #         if "stage_id" in changes and crm_lead.stage_id.mail_template_id:
-    #             stage_id = (
-    #                 crm_lead.stage_id.mail_template_id,
-    #                 {
-    #                     "auto_delete_message": True,
-    #                     "subtype_id": self.env["ir.model.data"]._xmlid_to_res_id(
-    #                         "mail.mt_note"
-    #                     ),
-    #                     "email_layout_xmlid": "mail.mail_notification_light",
-    #                 },
-    #             )
-
-    #             res["stage_id"] = stage_id
-    #     except MissingError:
-    #         pass
-    #     finally:
-    #         return res
-
     @api.onchange('stage_id')
     def _onchange_stage_id(self):
         if self.stage_id:
-            try:
-                self.stage_id._notify_users(self.stage_id.mail_template_id, {
-                    'recipients': self.stage_id.user_notification_ids})
-            except MissingError:
-                pass
+            self._notify_stage_change()
+
+    def _notify_stage_change(self):
+        for lead in self:
+            if stage_id := lead.stage_id:
+                try:
+                    lead.stage_id._notify_users(stage_id.mail_template_id, {
+                        'recipients': stage_id.user_notification_ids,
+                        'pipeline': lead.name,
+                    })
+                except MissingError:
+                    pass
+
+    def action_set_won_rainbowman(self):
+        res = super().action_set_won_rainbowman()
+        for lead in self:
+            lead._notify_stage_change()
+        return res
