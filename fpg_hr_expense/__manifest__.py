@@ -15,9 +15,9 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['base'],
+    'depends': ['hr_expense'],
 
     'data': [
-        'views/views.xml',
+        'data/email_data.xml',
     ],
 }
