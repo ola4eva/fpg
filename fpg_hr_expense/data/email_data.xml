@@ -15,7 +15,30 @@
                     <p>Dear <t t-out="object.employee_id.parent_id.name" />,</p>
                     <p>
                         <t t-out="object.name" />, was submitted for approval by <t
-                            t-out="object.employee_id.name" />. please follow this <a
+                            t-out="object.employee_id.name" />. Please follow this <a
+                            t-attf-href="{{object.link}}">link</a> to access the document. </p>
+                    <p>Thank you for your prompt attention</p>
+                    <br />
+                    <p>Best Regards,</p>
+                    <p>Administrator.</p>
+                </div>
+            </field>
+        </record>
+
+        <!-- Expense Sheet Submit to Finance -->
+        <record id="hr_expense_sheet_submit_finance" model="mail.template">
+            <field name="name">Expense Report {{object.name}} Submitted For Approval</field>
+            <field name="subject">Expense Report {{object.name}} Submitted For Approval</field>
+            <field name="email_from">{{ object.employee_id.parent_id.work_email }}</field>
+            <field name="email_to">{{ ctx.get('recipient')['work_email'] }}</field>
+            <field name="model_id" ref="model_hr_expense_sheet" />
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear <t t-out="ctx.get('recipient')['name']" />,</p>
+                    <p>
+                        <t t-out="object.name" />, was approved by <t
+                            t-out="object.employee_id.parent_id.name" /> and requires your
+                        attention. Please follow this <a
                             t-attf-href="{{object.link}}">link</a> to access the document. </p>
                     <p>Thank you for your prompt attention</p>
                     <br />

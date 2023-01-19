@@ -18,6 +18,24 @@ class HrExpenseSheet(models.Model):
             _logger.error("%s" % e)
         return super(HrExpenseSheet, self).action_submit_sheet()
 
+    def approve_expense_sheets(self):
+        # send email to finance
+        account_group = self.env.ref("account.group_account_invoice")
+        email_template = self.env.ref(
+            'fpg_hr_expense.hr_expense_sheet_submit_finance')
+        account_users = account_group.users
+        account_employees = self.env['hr.employee'].search(
+            [('user_id', 'in', account_users.ids)])
+        recipients = account_employees.read(['name', 'work_email'])
+        _logger.info("RECIPIENTS %s" % recipients)
+        for recipient in recipients:
+            try:
+                email_template.with_context({'recipient': recipient}).send_mail(
+                    self.id, force_send=True)
+            except:
+                _logger.error("***** Error sending email to finance *****")
+        return super(HrExpenseSheet, self).approve_expense_sheets()
+
     def _notify_employee_manager(self):
         """Notify the employee's manager that an expense report has been submitted for their review.
         """
