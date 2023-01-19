@@ -3,45 +3,20 @@
 
     <data>
 
-        <!-- CRM State Change completed -->
-        <!-- <record id="crm_lead_stage_change" model="mail.template">
-            <field name="name">CRM Pipeline: Stage Change</field>
-            <field name="subject">Pipeline State Updated</field>
-            <field name="email_from">{{ user.company_id.email }}</field>
-            <field name="email_to">{{ ('' if not object.stage_id.user_notification_ids else ','.join(object.user_notification_ids.mapped('email'))) }}</field>
-            <field name="model_id" ref="model_crm_lead" />
-            <field name="body_html" type="html">
-                <div style="margin: 0px; padding: 0px;">
-                    <p>Hello,</p>
-                    <p>
-                        <t t-out="object.name" />
-                        , has been updated to
-                        <t t-out="object.stage_id.name" />
-                        stage.
-                    </p>
-                    <p>Best Regards,</p>
-                    <p>Administrator.</p>
-                </div>
-            </field>
-        </record> -->
-
         <record id="crm_stage_email_template" model="mail.template">
             <field name="name">CRM Pipeline: Stage Change</field>
             <field name="subject">Pipeline State Updated</field>
             <field name="email_from">{{ user.company_id.email }}</field>
-            <field name="email_to">{{ ('' if not object.user_notification_ids else ','.join(object.user_notification_ids.mapped('partner_id').mapped('email_formatted'))) }}</field>
+            <field name="email_to">{{ ('' if not object.user_notification_ids else
+                ','.join(object.user_notification_ids.mapped('partner_id').mapped('email_formatted')))
+                }}</field>
             <field name="auto_delete" eval="False" />
             <field name="model_id" ref="model_crm_stage" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p>Hello,</p>
-                    <p>
-                        Pipline
-                        <t t-out="ctx.get('pipeline')" />
-                        has been updated to
-                        <t t-out="object.name" />
-                        stage.
-                    </p>
+                    <p> Pipline <t t-out="ctx.get('pipeline')" /> has been updated to <t
+                            t-out="object.name" /> stage. </p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
