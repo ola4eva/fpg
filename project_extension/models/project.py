@@ -35,6 +35,8 @@ class ProjectTask(models.Model):
             ("stage_id.is_closed", "=", False),
         ]
         overdue_tasks = self.search(domain_overdue)
+        sender_email = self.env.ref(
+            'base.user_admin').email
         for task in overdue_tasks:
             assignees = task.user_ids
             days_overdue = (today - task.date_deadline).days
@@ -42,7 +44,7 @@ class ProjectTask(models.Model):
                 "project_extension.task_overdue")
             for assignee in assignees:
                 partner_id = assignee.partner_id
-                mail_template.with_context(recipient=partner_id, days_overdue=days_overdue).send_mail(
+                mail_template.with_context(recipient=partner_id, days_overdue=days_overdue, sender_email=sender_email).send_mail(
                     task.id, force_send=True
                 )
         return True
@@ -86,26 +88,29 @@ class ProjectTask(models.Model):
         mail_template_five_days = self.env.ref(
             "project_extension.task_due_in_five_days")
 
+        sender_email = self.env.ref(
+            'base.user_admin').email
+
         # send the emails depending on when the tasks are expected to be due
         # TODO: enhance the implementation later as this approach is not DRY and efficient
         for task in tasks_due_in_one_day:
             for assignee in task.user_ids:
-                mail_template_one_day.with_context(recipient=assignee.partner_id).send_mail(
+                mail_template_one_day.with_context(recipient=assignee.partner_id, sender_email=sender_email).send_mail(
                     task.id, force_send=True
                 )
         for task in tasks_due_in_two_days:
             for assignee in task.user_ids:
-                mail_template_two_days.with_context(recipient=assignee.partner_id).send_mail(
+                mail_template_two_days.with_context(recipient=assignee.partner_id, sender_email=sender_email).send_mail(
                     task.id, force_send=True
                 )
         for task in tasks_due_in_three_days:
             for assignee in task.user_ids:
-                mail_template_three_days.with_context(recipient=assignee.partner_id).send_mail(
+                mail_template_three_days.with_context(recipient=assignee.partner_id, sender_email=sender_email).send_mail(
                     task.id, force_send=True
                 )
         for task in tasks_due_in_five_days:
             for assignee in task.user_ids:
-                mail_template_five_days.with_context(recipient=assignee.partner_id).send_mail(
+                mail_template_five_days.with_context(recipient=assignee.partner_id, sender_email=sender_email).send_mail(
                     task.id, force_send=True
                 )
         return True
