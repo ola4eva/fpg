@@ -2,7 +2,7 @@
 <odoo>
     <data noupdate="1">
 
-        <!-- Task completed -->    
+        <!-- Task completed -->
         <record id="task_completed" model="mail.template">
             <field name="name">Project Task: Task Completed</field>
             <field name="subject">{{ object.name }} Has Been Completed</field>
@@ -11,32 +11,34 @@
             <field name="model_id" ref="model_project_task" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear <t t-out="object.project_id.user_id.partner_id.name"/>,</p>
-                    <p>Task, <t t-out="object.name"/>, has been completed.</p>
+                    <p>Dear <t t-out="object.project_id.user_id.partner_id.name" />,</p>
+                    <p>Task, <t t-out="object.name" />, has been completed.</p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
             </field>
         </record>
 
-        <!-- Task 1 day overdue -->    
-        <record id="task_one_day_overdue" model="mail.template">
+        <!-- Task overdue -->
+        <record id="task_overdue" model="mail.template">
             <field name="name">Project Task: One Day Overdue</field>
-            <field name="subject">Task Is One Day Overdue</field>
+            <field name="subject">Task Is {{ ctx.get('days_overdue') }} Day Overdue</field>
             <field name="email_from">{{ user.company_id.email }}</field>
             <field name="email_to">{{ ctx.get('recipient')['email'] }}</field>
             <field name="model_id" ref="model_project_task" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear <t t-out="ctx.get('recipient')['name']"/>,</p>
-                    <p>Your task, <t t-out="object.name"/>, is one day overdue. Please take note.</p>
+                    <p>Dear <t t-out="ctx.get('recipient')['name']" />,</p>
+                    <p>Your task, <t t-out="object.name" />, is <t t-out="ctx.get('days_overdue')" /> <t
+                            t-if="ctx.get('days_overdue') > 1">days</t> <t t-else="">day</t> overdue.
+                        Please take note.</p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
             </field>
         </record>
 
-        <!-- Task That will be due in 5 days-->    
+        <!-- Task That will be due in 5 days-->
         <record id="task_due_in_five_days" model="mail.template">
             <field name="name">Project Task: Task Due in Five Days</field>
             <field name="subject">Task Is Due In Five Days</field>
@@ -45,15 +47,15 @@
             <field name="model_id" ref="model_project_task" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear <t t-out="ctx.get('recipient')['name']"/>,</p>
-                    <p>Your task, <t t-out="object.name"/>, is due in five days. Please take note.</p>
+                    <p>Dear <t t-out="ctx.get('recipient')['name']" />,</p>
+                    <p>Your task, <t t-out="object.name" />, is due in five days. Please take note.</p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
             </field>
         </record>
 
-        <!-- Task That will be due in 3 days-->    
+        <!-- Task That will be due in 3 days-->
         <record id="task_due_in_three_days" model="mail.template">
             <field name="name">Project Task: Task Due in Three Days</field>
             <field name="subject">Task Is Due In Three Days</field>
@@ -62,15 +64,15 @@
             <field name="model_id" ref="model_project_task" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear <t t-out="ctx.get('recipient')['name']"/>,</p>
-                    <p>Your task, <t t-out="object.name"/>, is due in three days. Please take note.</p>
+                    <p>Dear <t t-out="ctx.get('recipient')['name']" />,</p>
+                    <p>Your task, <t t-out="object.name" />, is due in three days. Please take note.</p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
             </field>
         </record>
 
-        <!-- Task That will be due in 2 days -->    
+        <!-- Task That will be due in 2 days -->
         <record id="task_due_in_two_days" model="mail.template">
             <field name="name">Project Task: Task Due in Two Days</field>
             <field name="subject">Task Is Due In Two Days</field>
@@ -79,15 +81,15 @@
             <field name="model_id" ref="model_project_task" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear <t t-out="ctx.get('recipient')['name']"/>,</p>
-                    <p>Your task, <t t-out="object.name"/>, is due in two days. Please take note.</p>
+                    <p>Dear <t t-out="ctx.get('recipient')['name']" />,</p>
+                    <p>Your task, <t t-out="object.name" />, is due in two days. Please take note.</p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
             </field>
         </record>
 
-        <!-- Task That will be due in 1 day -->    
+        <!-- Task That will be due in 1 day -->
         <record id="task_due_in_one_day" model="mail.template">
             <field name="name">Project Task: Task Due in One Day</field>
             <field name="subject">Task Is Due In 1 Day</field>
@@ -96,8 +98,8 @@
             <field name="model_id" ref="model_project_task" />
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <p>Dear <t t-out="ctx.get('recipient')['name']"/>,</p>
-                    <p>Your task, <t t-out="object.name"/>, is due in 1 day. Please take note.</p>
+                    <p>Dear <t t-out="ctx.get('recipient')['name']" />,</p>
+                    <p>Your task, <t t-out="object.name" />, is due in 1 day. Please take note.</p>
                     <p>Best Regards,</p>
                     <p>Administrator.</p>
                 </div>
